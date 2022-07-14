@@ -91,7 +91,8 @@ class LoginScreen extends StatelessWidget {
                     obscureText: true,
                   ),
                   CustomButton(
-                    text: 'ENTRAR', 
+                    widget: const Text('ENTRAR'),
+                    backColor: Colors.orange,
                     onPressed: () {}
                   ),
                   const Divider(),
@@ -109,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                              MaterialPageRoute(builder: (_) => SignUpScreen()));
                           },
                           child: const Text(
                             'Cadastre-se',
