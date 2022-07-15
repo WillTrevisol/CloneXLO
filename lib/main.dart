@@ -1,4 +1,5 @@
 import 'package:clone_xlo_flutter/stores/page_store.dart';
+import 'package:clone_xlo_flutter/stores/user_manager_store.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -14,6 +15,7 @@ void main() async {
  
 void setupLocators() {
   GetIt.I.registerSingleton(PageStore());
+  GetIt.I.registerSingleton(UserManagerStore());
 }
 
 Future<void> initializeParse() async {

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../screens/login/login_screen.dart';
+import '../../stores/page_store.dart';
+import '../../stores/user_manager_store.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
-  const CustomDrawerHeader({Key? key}) : super(key: key);
+  CustomDrawerHeader({Key? key}) : super(key: key);
+
+  final UserManagerStore userStore = GetIt.I.get<UserManagerStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +28,20 @@ class CustomDrawerHeader extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget> [
+              children: <Widget> [
                 Text(
-                  'Acesse sua conta',
-                  style: TextStyle(
+                  userStore.isLoggedIn 
+                  ? userStore.user!.name 
+                  : 'Acesse sua conta',
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  'Clique aqui',
-                style: TextStyle(
+                  userStore.isLoggedIn 
+                  ? userStore.user!.email 
+                  : 'Clique aqui',
+                style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
@@ -42,10 +51,16 @@ class CustomDrawerHeader extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const LoginScreen())
-        );
+        if (userStore.isLoggedIn) {
+          GetIt.I<PageStore>().setPage(4);
+        }
+
+        if (!userStore.isLoggedIn) {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => LoginScreen())
+          );
+        }
       },
     );
   }

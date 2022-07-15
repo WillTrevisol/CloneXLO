@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../widgets/button/custom_button.dart';
+import '../../widgets/error_box.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -32,7 +33,17 @@ class SignUpScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
+                children: <Widget> [
+                  Observer(
+                    builder: (_) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: ErrorBox(
+                          message: controller.error,
+                        ),
+                      );
+                    }
+                  ),
                   const FieldTitle(
                       title: 'Apelido',
                       subtitle: 'Como aparecerá em seus anúncios.'),

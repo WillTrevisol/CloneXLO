@@ -1,10 +1,15 @@
+import 'package:clone_xlo_flutter/stores/login_store.dart';
+import 'package:clone_xlo_flutter/widgets/error_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../widgets/button/custom_button.dart';
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final LoginStore controller = LoginStore();
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +25,14 @@ class LoginScreen extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 32),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              ),
+            ),
             elevation: 8,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget> [
+                children: <Widget>[
                   Text(
                     'Acessar com E-mail: ',
                     textAlign: TextAlign.center,
@@ -35,6 +40,16 @@ class LoginScreen extends StatelessWidget {
                       fontSize: 16,
                       color: Colors.grey[900],
                     ),
+                  ),
+                  Observer(
+                    builder: (_) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ErrorBox(
+                          message: controller.error
+                        ),
+                      );
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 3, bottom: 4, top: 8),
@@ -47,19 +62,26 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
+                  Observer(
+                    builder: (_) {
+                      return TextField(
+                        enabled: !controller.loading,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          isDense: true,
+                          errorText: controller.emailError,
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: controller.setEmail,
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.only(left: 3, bottom: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget> [
+                      children: <Widget>[
                         Text(
                           'Senha',
                           style: TextStyle(
@@ -69,55 +91,70 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          child: const Text(
-                            'Esqueceu sua senha?',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.purple,
+                          child: const SizedBox(
+                            child: Text(
+                              'Esqueceu sua senha?',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Colors.purple,
+                              ),
                             ),
                           ),
-                          onTap: () {
-        
-                          },
+                          onTap: () {},
                         ),
                       ],
                     ),
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    obscureText: true,
+                  Observer(
+                    builder: (_) {
+                      return TextField(
+                        enabled: !controller.loading,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          isDense: true,
+                          errorText: controller.passwordError,
+                        ),
+                        obscureText: true,
+                        onChanged: controller.setPassword,
+                      );
+                    },
                   ),
-                  CustomButton(
-                    widget: const Text('ENTRAR'),
-                    backColor: Colors.orange,
-                    onPressed: () {}
+                  Observer(
+                    builder: (_) {
+                      return CustomButton(
+                        widget: controller.loading 
+                          ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          ) 
+                          : const Text('ENTRAR'),
+                        backColor: controller.buttonColor,
+                        onPressed: controller.signInPressed,
+                      );
+                    },
                   ),
                   const Divider(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Wrap(
                       alignment: WrapAlignment.spaceEvenly,
-                      children: <Widget> [
+                      children: <Widget>[
                         const Text(
                           'Não tem uma conta? ',
-                          style: TextStyle(
-                            fontSize: 16
-                          ),
+                          style: TextStyle(fontSize: 16),
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => SignUpScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => SignUpScreen()));
                           },
-                          child: const Text(
-                            'Cadastre-se',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.purple,
-                              fontSize: 16,
+                          child: const SizedBox(
+                            child: Text(
+                              'Cadastre-se',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Colors.purple,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -125,7 +162,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              ), 
+              ),
             ),
           ),
         ),

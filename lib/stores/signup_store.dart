@@ -1,6 +1,10 @@
+import 'package:clone_xlo_flutter/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import '../helpers/extensions.dart';
+import '../models/user.dart';
+import 'user_manager_store.dart';
 
 
 part 'signup_store.g.dart';
@@ -127,10 +131,28 @@ abstract class _SignUpStoreBase with Store {
   @action
   void setLoading(bool value) => loading = value;
 
+  @observable
+  dynamic error = '';
+
+  @action
+  void setError(dynamic value) => error = value;
+
   Future<void> _signup() async {
     setLoading(true);
-    
-    await Future.delayed(const Duration(seconds: 5));
+
+    final User user = User(
+      name: name,
+      phone: phone,
+      email: email,
+      password: pass,
+    );
+
+    try {
+      final resultUser = await UserRepository().signUp(user);
+      GetIt.I<UserManagerStore>().setUser(resultUser);
+    } catch (e) {
+      setError(e);
+    }
 
     setLoading(false);
   }
