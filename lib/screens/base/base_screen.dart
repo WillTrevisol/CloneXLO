@@ -1,3 +1,4 @@
+import 'package:clone_xlo_flutter/screens/create_ad.dart/create_ad_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
@@ -34,7 +35,7 @@ class _BaseScreenState extends State<BaseScreen> {
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget> [
           const HomeScreen(),
-          Container(color: Colors.yellowAccent),
+          CreateAdScreen(),
           Container(color: Colors.red),
           Container(color: Colors.black),
           Container(color: Colors.blue),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../screens/login/login_screen.dart';
@@ -15,38 +16,42 @@ class CustomDrawerHeader extends StatelessWidget {
     return GestureDetector(
       child: DrawerHeader(
         decoration: const BoxDecoration(
-          color: Colors.purple, 
+          color: Colors.purple,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget> [
+          children: <Widget>[
             const Icon(
               Icons.person,
               size: 34,
               color: Colors.white,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget> [
-                Text(
-                  userStore.isLoggedIn 
-                  ? userStore.user!.name 
-                  : 'Acesse sua conta',
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  userStore.isLoggedIn 
-                  ? userStore.user!.email 
-                  : 'Clique aqui',
-                style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            )
+            Observer(
+              builder: (_) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      userStore.isLoggedIn
+                          ? userStore.user!.name
+                          : 'Acesse sua conta',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      userStore.isLoggedIn
+                          ? userStore.user!.email
+                          : 'Clique aqui',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -57,9 +62,8 @@ class CustomDrawerHeader extends StatelessWidget {
 
         if (!userStore.isLoggedIn) {
           Navigator.of(context).pop();
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => LoginScreen())
-          );
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => LoginScreen()));
         }
       },
     );

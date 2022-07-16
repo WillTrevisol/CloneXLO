@@ -18,7 +18,6 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastro'),
-        centerTitle: true,
       ),
       body: Container(
         alignment: Alignment.center,

@@ -16,7 +16,6 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Entrar'),
-        centerTitle: true,
       ),
       body: Container(
         alignment: Alignment.center,
