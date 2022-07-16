@@ -6,6 +6,9 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'screens/base/base_screen.dart';
 
+const appId = String.fromEnvironment('APPID');
+const clientKey = String.fromEnvironment('CLIENTKEY');
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeParse();
@@ -20,9 +23,9 @@ void setupLocators() {
 
 Future<void> initializeParse() async {
    await ParseCoreData.init(
-    'TJCmK4ruAvD1yL58A4SbOjjs9akDClbsnTTIJHpJ',
+    appId,
     'https://parseapi.back4app.com',
-    clientKey: 'YKA4Fvg50zoPxSLAzgQtOzmj4gLttmJ3iUenAAMq',
+    clientKey: clientKey,
     autoSendSessionId: true,
     debug: true,
   );
