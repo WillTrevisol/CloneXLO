@@ -29,7 +29,10 @@ class CategoryScreen extends StatelessWidget {
           child: Observer(
             builder: (_) {
               if (controller.errorMessage != null) {
-                return ErrorBox(message: controller.errorMessage);
+                return ErrorBox(
+                  message: controller.errorMessage,
+                  radius: 12,
+                  );
               }
 
               if (controller.categoriesList.isEmpty) {

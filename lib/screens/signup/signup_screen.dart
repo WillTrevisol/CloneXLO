@@ -39,6 +39,7 @@ class SignUpScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: ErrorBox(
                           message: controller.error,
+                          radius: 12,
                         ),
                       );
                     }
@@ -138,14 +139,18 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Observer(
                     builder: (_) {
-                      return CustomButton(
-                        widget: controller.loading 
-                          ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.white),
-                          ) 
-                          : const Text('CADASTRAR'),
-                        backColor: controller.buttonColor,
-                        onPressed: controller.signUpPressed,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: CustomButton(
+                          widget: controller.loading 
+                            ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            ) 
+                            : const Text('CADASTRAR'),
+                          borderRadius: 20,
+                          backColor: controller.buttonColor,
+                          onPressed: controller.signUpPressed,
+                        ),
                       );
                     }
                   ),

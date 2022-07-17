@@ -45,7 +45,8 @@ class LoginScreen extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ErrorBox(
-                          message: controller.error
+                          message: controller.error,
+                          radius: 12,
                         ),
                       );
                     },
@@ -120,14 +121,18 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Observer(
                     builder: (_) {
-                      return CustomButton(
-                        widget: controller.loading 
-                          ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          ) 
-                          : const Text('ENTRAR'),
-                        backColor: controller.buttonColor,
-                        onPressed: controller.signInPressed,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: CustomButton(
+                          widget: controller.loading 
+                            ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            ) 
+                            : const Text('ENTRAR'),
+                          borderRadius: 20,
+                          backColor: controller.buttonColor,
+                          onPressed: controller.signInPressed,
+                        ),
                       );
                     },
                   ),
