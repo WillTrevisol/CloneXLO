@@ -1,10 +1,12 @@
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:clone_xlo_flutter/stores/create_ad_store.dart';
-import 'package:clone_xlo_flutter/widgets/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../stores/create_ad_store.dart';
+import '../../widgets/drawer/custom_drawer.dart';
+import 'widgets/category_field.dart';
 import 'widgets/images_field.dart';
+import 'widgets/zipcode_field.dart';
 
 class CreateAdScreen extends StatelessWidget {
   CreateAdScreen({Key? key}) : super(key: key);
@@ -53,13 +55,8 @@ class CreateAdScreen extends StatelessWidget {
               ),
               maxLines: null,
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'CEP *',
-                labelStyle: labelStyle,
-                contentPadding: contentPadding,
-              ),
-            ),
+            CategoryField(controller: controller),
+            ZipCodeField(),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Preço *',

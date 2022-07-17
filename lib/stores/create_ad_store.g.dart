@@ -25,10 +25,41 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
     });
   }
 
+  late final _$categoryAtom =
+      Atom(name: '_CreateAdStoreBase.category', context: context);
+
+  @override
+  Category? get category {
+    _$categoryAtom.reportRead();
+    return super.category;
+  }
+
+  @override
+  set category(Category? value) {
+    _$categoryAtom.reportWrite(value, super.category, () {
+      super.category = value;
+    });
+  }
+
+  late final _$_CreateAdStoreBaseActionController =
+      ActionController(name: '_CreateAdStoreBase', context: context);
+
+  @override
+  void setCategory(Category value) {
+    final _$actionInfo = _$_CreateAdStoreBaseActionController.startAction(
+        name: '_CreateAdStoreBase.setCategory');
+    try {
+      return super.setCategory(value);
+    } finally {
+      _$_CreateAdStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-images: ${images}
+images: ${images},
+category: ${category}
     ''';
   }
 }

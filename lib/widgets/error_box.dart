@@ -14,7 +14,7 @@ class ErrorBox extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration:  BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.red,
+        color: Colors.red.withAlpha(200),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -26,7 +26,7 @@ class ErrorBox extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'Opa, $message. Tente novamente!',
+              'Opa, $message\nTente novamente!',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
