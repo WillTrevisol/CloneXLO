@@ -2,19 +2,39 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../stores/create_ad_store.dart';
+import '../../stores/page_store.dart';
 import '../../widgets/button/custom_button.dart';
 import '../../widgets/drawer/custom_drawer.dart';
+import '../../widgets/error_box.dart';
 import 'widgets/category_field.dart';
 import 'widgets/hide_phone_field.dart';
 import 'widgets/images_field.dart';
 import 'widgets/zipcode_field.dart';
 
-class CreateAdScreen extends StatelessWidget {
-  CreateAdScreen({Key? key}) : super(key: key);
+class CreateAdScreen extends StatefulWidget {
+  const CreateAdScreen({Key? key}) : super(key: key);
 
+  @override
+  State<CreateAdScreen> createState() => _CreateAdScreenState();
+}
+
+class _CreateAdScreenState extends State<CreateAdScreen> {
   final CreateAdStore controller = CreateAdStore();
+
+  @override
+  void initState() {
+    
+    when(
+      (_) => controller.savedAd != null, 
+      () => GetIt.I.get<PageStore>().setPage(0),
+    );
+      
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,76 +60,106 @@ class CreateAdScreen extends StatelessWidget {
           ),
           elevation: 8,
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ImagesField(controller: controller),
-                Observer(builder: (_) {
-                  return TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Título *',
-                      labelStyle: labelStyle,
-                      contentPadding: contentPadding,
-                      errorText: controller.titleError,
-                    ),
-                    onChanged: controller.setTitle,
-                  );
-                }),
-                Observer(
-                  builder: (_) {
-                    return TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Descrição *',
-                        labelStyle: labelStyle,
-                        contentPadding: contentPadding,
-                        errorText: controller.descriptionError,
-                      ),
-                      onChanged: controller.setDescription,
-                      maxLines: null,
-                    );
-                  },
-                ),
-                CategoryField(controller: controller),
-                ZipCodeField(createAdController: controller),
-                Observer(
-                  builder: (_) {
-                    return TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Preço *',
-                        labelStyle: labelStyle,
-                        contentPadding: contentPadding,
-                        prefixText: 'R\$ ',
-                        errorText: controller.priceError,
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: controller.setPriceText,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CentavosInputFormatter()
-                      ],
-                    );
-                  },
-                ),
-                HidePhoneField(controller: controller),
-                SizedBox(
-                  height: 70,
-                  child: Observer(
-                    builder: (_) {
-                      return GestureDetector(
-                        onTap: controller.invalidSendPressed,
-                        child: CustomButton(
-                          widget: const Text('Enviar'),
-                          backColor: controller.colorButton,
-                          borderRadius: 0,
-                          onPressed: controller.sendPressed,
+            child: Observer(
+              builder: (_) {
+
+                if (controller.loading) {
+                  return Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const <Widget> [
+                        Text(
+                          'Salvando anúncio...',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.purple,
+                          ),
                         ),
+                        SizedBox(height: 12),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  );
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ImagesField(controller: controller),
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Título *',
+                          labelStyle: labelStyle,
+                          contentPadding: contentPadding,
+                          errorText: controller.titleError,
+                        ),
+                        onChanged: controller.setTitle,
                       );
-                    },
-                  ),
-                ),
-              ],
-            ),
+                    }),
+                    Observer(
+                      builder: (_) {
+                        return TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Descrição *',
+                            labelStyle: labelStyle,
+                            contentPadding: contentPadding,
+                            errorText: controller.descriptionError,
+                          ),
+                          onChanged: controller.setDescription,
+                          maxLines: null,
+                        );
+                      },
+                    ),
+                    CategoryField(controller: controller),
+                    ZipCodeField(createAdController: controller),
+                    Observer(
+                      builder: (_) {
+                        return TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Preço *',
+                            labelStyle: labelStyle,
+                            contentPadding: contentPadding,
+                            prefixText: 'R\$ ',
+                            errorText: controller.priceError,
+                          ),
+                          keyboardType: TextInputType.number,
+                          onChanged: controller.setPriceText,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CentavosInputFormatter()
+                          ],
+                        );
+                      },
+                    ),
+                    HidePhoneField(controller: controller),
+                    ErrorBox(
+                      message: controller.error, 
+                      radius: 0,
+                    ),
+                    SizedBox(
+                      height: 70,
+                      child: Observer(
+                        builder: (_) {
+                          return GestureDetector(
+                            onTap: controller.invalidSendPressed,
+                            child: CustomButton(
+                              widget: const Text('Enviar'),
+                              backColor: controller.colorButton,
+                              borderRadius: 0,
+                              onPressed: controller.sendPressed,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            )
           ),
         ),
       ),

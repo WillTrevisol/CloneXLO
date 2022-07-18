@@ -1,10 +1,10 @@
 class UF {
   
-  int id;
+  int? id;
   String initials;
   String name;
 
-  UF({required this.id, required this.initials, required this.name});
+  UF({this.id, required this.initials, required this.name});
 
   factory UF.fromJson(Map<String, dynamic> data) => UF(
     id: data['id'],

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
+import '../models/ad.dart';
 import '../models/address.dart';
 import '../models/category.dart';
+import '../repositories/ad_repository.dart';
+import 'user_manager_store.dart';
 import 'zipcode_store.dart';
 part 'create_ad_store.g.dart';
 
@@ -77,7 +81,7 @@ abstract class _CreateAdStoreBase with Store {
       return null;
     }
 
-    return 'Campo obrigatório.';
+    return 'Selecione uma categoria.';
   }
 
   late ZipCodeStore zipCodeController = ZipCodeStore();
@@ -143,8 +147,46 @@ abstract class _CreateAdStoreBase with Store {
   @action
   void invalidSendPressed() => showErrors = true;
 
-  Future<void> _send() async {
+  @observable
+  bool loading = false;
 
+  @action
+  void setLoading(bool value) => loading = value;
+
+  @observable
+  dynamic error;
+
+  @action
+  void setError(dynamic value) => error = value;
+
+  @observable
+  Ad? savedAd;
+
+  @action
+  void setSavedAd(Ad value) => savedAd = value;
+
+  Future<void> _send() async {
+    setError(null);
+
+    final ad = Ad(
+      images: images, 
+      title: title, 
+      description: description, 
+      category: category, 
+      address: address, 
+      price: price, 
+      hidePhone: hidePhone, 
+      user: GetIt.I.get<UserManagerStore>().user,
+    );
+
+    setLoading(true);
+    try {
+      final savedAd = await AdRepository().save(ad);
+      setSavedAd(savedAd!);
+    } catch (e) {
+      setError(e);
+    }
+    setLoading(false);
   }
 
 }

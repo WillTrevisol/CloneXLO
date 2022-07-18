@@ -184,6 +184,54 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: '_CreateAdStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$errorAtom =
+      Atom(name: '_CreateAdStoreBase.error', context: context);
+
+  @override
+  dynamic get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(dynamic value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  late final _$savedAdAtom =
+      Atom(name: '_CreateAdStoreBase.savedAd', context: context);
+
+  @override
+  Ad? get savedAd {
+    _$savedAdAtom.reportRead();
+    return super.savedAd;
+  }
+
+  @override
+  set savedAd(Ad? value) {
+    _$savedAdAtom.reportWrite(value, super.savedAd, () {
+      super.savedAd = value;
+    });
+  }
+
   late final _$_CreateAdStoreBaseActionController =
       ActionController(name: '_CreateAdStoreBase', context: context);
 
@@ -254,6 +302,39 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
   }
 
   @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$_CreateAdStoreBaseActionController.startAction(
+        name: '_CreateAdStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_CreateAdStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setError(dynamic value) {
+    final _$actionInfo = _$_CreateAdStoreBaseActionController.startAction(
+        name: '_CreateAdStoreBase.setError');
+    try {
+      return super.setError(value);
+    } finally {
+      _$_CreateAdStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSavedAd(Ad value) {
+    final _$actionInfo = _$_CreateAdStoreBaseActionController.startAction(
+        name: '_CreateAdStoreBase.setSavedAd');
+    try {
+      return super.setSavedAd(value);
+    } finally {
+      _$_CreateAdStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 images: ${images},
@@ -263,6 +344,9 @@ category: ${category},
 priceText: ${priceText},
 hidePhone: ${hidePhone},
 showErrors: ${showErrors},
+loading: ${loading},
+error: ${error},
+savedAd: ${savedAd},
 validImages: ${validImages},
 validTitle: ${validTitle},
 validDescription: ${validDescription},

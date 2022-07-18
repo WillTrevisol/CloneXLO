@@ -132,7 +132,7 @@ abstract class _SignUpStoreBase with Store {
   void setLoading(bool value) => loading = value;
 
   @observable
-  dynamic error = '';
+  dynamic error;
 
   @action
   void setError(dynamic value) => error = value;
