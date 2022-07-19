@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../stores/home_store.dart';
 import 'widgets/search_dialog.dart';
+import 'widgets/top_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -53,6 +54,11 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
+          ],
+        ),
+        body: Column(
+          children: <Widget> [
+            TopBar(),
           ],
         ),
       ),

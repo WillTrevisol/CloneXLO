@@ -113,7 +113,7 @@ abstract class _CreateAdStoreBase with Store {
 
     return num.tryParse(priceText); 
   }
-  bool get validPrice => price != null && price !< 9999999;
+  bool get validPrice => price != null && price! < 9999999;
   String? get priceError {
     if (!showErrors || validPrice) {
       return null;

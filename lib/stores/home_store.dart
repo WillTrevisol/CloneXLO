@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+
+import '../models/category.dart';
 part 'home_store.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -12,5 +14,10 @@ abstract class _HomeStoreBase with Store {
   @action
   void setSearch(String value) => search = value;
 
+  @observable
+  Category? category;
+
+  @action
+  void setCategory(Category value) => category = value;
 
 }
