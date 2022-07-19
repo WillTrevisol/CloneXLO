@@ -1,13 +1,86 @@
 import 'dart:io';
 
+import 'package:clone_xlo_flutter/models/user.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:path/path.dart' as path;
 
 import '../models/ad.dart';
+import '../models/category.dart';
+import '../stores/filter_store.dart';
 import 'parse_errors.dart';
 import 'table_keys.dart';
 
 class AdRepository {
+
+  Future<List<Ad>> getHomeAdList({
+    required FilterStore filter, 
+    String? search, 
+    Category? category,
+    }) async {
+
+      final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
+
+      queryBuilder.includeObject([keyAdOwner, keyAdCategory]);
+
+      queryBuilder.whereEqualTo(keyAdStatus, AdStatus.active.index);
+
+      queryBuilder.setLimit(20);
+
+      if (search != null && search.trim().isNotEmpty) {
+        queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
+      }
+      
+      if (category != null && category.id != '1') {
+        queryBuilder.whereEqualTo(
+          keyAdCategory, 
+          (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id)).toPointer()
+        );
+      }
+
+      switch(filter.orderBy) {
+        
+        case OrderBy.price:
+          queryBuilder.orderByAscending(keyAdPrice);
+          break;
+        case OrderBy.date:
+        default:
+          queryBuilder.orderByDescending(keyAdCreatedAt);
+          break;
+      }
+
+      if (filter.minPrice != null && filter.minPrice! > 0) {
+        queryBuilder.whereGreaterThanOrEqualsTo(keyAdPrice, filter.minPrice);
+      }
+
+      if (filter.maxPrice != null && filter.maxPrice! > 0) {
+        queryBuilder.whereLessThanOrEqualTo(keyAdPrice, filter.maxPrice);
+      }
+
+      if (filter.sellerType > 0 && filter.sellerType < (sellerTypeProfessional | sellerTypeParticular)) {
+        final userQuery = QueryBuilder<ParseUser>(ParseUser.forQuery());
+
+        if (filter.sellerType == sellerTypeParticular) {
+          userQuery.whereEqualTo(keyUserType, UserType.particular.index);
+        }
+
+        if (filter.sellerType == sellerTypeProfessional) {
+          userQuery.whereEqualTo(keyUserType, UserType.professional);
+        }
+
+        queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);
+      }
+
+      final response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        return response.results!.map((ad) => Ad.fromParse(ad)).toList();
+      } else if (response.success && response.results == null) {
+        return [];
+      } else {
+        return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+      }
+  }
+
 
   Future<void> save(Ad ad) async {
     try {
@@ -45,7 +118,7 @@ class AdRepository {
       final response = await adObject.save();
 
       if (!response.success) {
-        return Future.error('${ParseErrors.getDescription(response.error?.code ?? 1)}');
+        return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
       }
     } catch (e) {
       return Future.error('Falha ao salvar anúncio.');
