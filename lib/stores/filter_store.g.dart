@@ -16,6 +16,20 @@ mixin _$FilterStore on _FilterStoreBase, Store {
       (_$priceErrorComputed ??= Computed<String?>(() => super.priceError,
               name: '_FilterStoreBase.priceError'))
           .value;
+  Computed<bool>? _$isTypeParticularComputed;
+
+  @override
+  bool get isTypeParticular => (_$isTypeParticularComputed ??= Computed<bool>(
+          () => super.isTypeParticular,
+          name: '_FilterStoreBase.isTypeParticular'))
+      .value;
+  Computed<bool>? _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_FilterStoreBase.isFormValid'))
+          .value;
 
   late final _$orderByAtom =
       Atom(name: '_FilterStoreBase.orderBy', context: context);
@@ -65,6 +79,22 @@ mixin _$FilterStore on _FilterStoreBase, Store {
     });
   }
 
+  late final _$sellerTypeAtom =
+      Atom(name: '_FilterStoreBase.sellerType', context: context);
+
+  @override
+  int get sellerType {
+    _$sellerTypeAtom.reportRead();
+    return super.sellerType;
+  }
+
+  @override
+  set sellerType(int value) {
+    _$sellerTypeAtom.reportWrite(value, super.sellerType, () {
+      super.sellerType = value;
+    });
+  }
+
   late final _$_FilterStoreBaseActionController =
       ActionController(name: '_FilterStoreBase', context: context);
 
@@ -102,12 +132,26 @@ mixin _$FilterStore on _FilterStoreBase, Store {
   }
 
   @override
+  void selectSellerType(int value) {
+    final _$actionInfo = _$_FilterStoreBaseActionController.startAction(
+        name: '_FilterStoreBase.selectSellerType');
+    try {
+      return super.selectSellerType(value);
+    } finally {
+      _$_FilterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 orderBy: ${orderBy},
 minPrice: ${minPrice},
 maxPrice: ${maxPrice},
-priceError: ${priceError}
+sellerType: ${sellerType},
+priceError: ${priceError},
+isTypeParticular: ${isTypeParticular},
+isFormValid: ${isFormValid}
     ''';
   }
 }

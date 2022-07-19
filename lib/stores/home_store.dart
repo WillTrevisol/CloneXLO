@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 
 import '../models/category.dart';
+import 'filter_store.dart';
 part 'home_store.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -19,5 +20,18 @@ abstract class _HomeStoreBase with Store {
 
   @action
   void setCategory(Category value) => category = value;
+
+  @observable
+  FilterStore filter = FilterStore(
+    orderBy: OrderBy.date,
+    minPrice: null,
+    maxPrice: null,
+    sellerType: sellerTypeParticular,
+  );
+
+  FilterStore get clonedFilter => filter.clone();
+
+  @action
+  void setFilter(FilterStore value) => filter = value;
 
 }
