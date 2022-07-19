@@ -29,7 +29,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
   void initState() {
     
     when(
-      (_) => controller.savedAd != null, 
+      (_) => controller.savedAd, 
       () => GetIt.I.get<PageStore>().setPage(0),
     );
       

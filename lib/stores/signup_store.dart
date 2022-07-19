@@ -139,6 +139,7 @@ abstract class _SignUpStoreBase with Store {
 
   Future<void> _signup() async {
     setLoading(true);
+    setError(null);
 
     final User user = User(
       name: name,

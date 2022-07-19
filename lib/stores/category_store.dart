@@ -34,6 +34,7 @@ abstract class _CategoryStoreBase with Store {
     ..insert(0, Category(id: '1', description: 'Todos'));
 
   Future<void> _loadCategories() async {
+    setError(null);
 
     try {
       final categories = await CategoryRepository().getList();

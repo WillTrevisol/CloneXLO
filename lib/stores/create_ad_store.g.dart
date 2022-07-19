@@ -44,11 +44,11 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
       (_$addressComputed ??= Computed<Address?>(() => super.address,
               name: '_CreateAdStoreBase.address'))
           .value;
-  Computed<double?>? _$priceComputed;
+  Computed<num?>? _$priceComputed;
 
   @override
-  double? get price => (_$priceComputed ??= Computed<double?>(() => super.price,
-          name: '_CreateAdStoreBase.price'))
+  num? get price => (_$priceComputed ??=
+          Computed<num?>(() => super.price, name: '_CreateAdStoreBase.price'))
       .value;
   Computed<bool>? _$formValidComputed;
 
@@ -220,13 +220,13 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
       Atom(name: '_CreateAdStoreBase.savedAd', context: context);
 
   @override
-  Ad? get savedAd {
+  bool get savedAd {
     _$savedAdAtom.reportRead();
     return super.savedAd;
   }
 
   @override
-  set savedAd(Ad? value) {
+  set savedAd(bool value) {
     _$savedAdAtom.reportWrite(value, super.savedAd, () {
       super.savedAd = value;
     });
@@ -324,7 +324,7 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
   }
 
   @override
-  void setSavedAd(Ad value) {
+  void setSavedAd(bool value) {
     final _$actionInfo = _$_CreateAdStoreBaseActionController.startAction(
         name: '_CreateAdStoreBase.setSavedAd');
     try {

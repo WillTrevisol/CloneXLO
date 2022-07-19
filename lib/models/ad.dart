@@ -18,9 +18,9 @@ class Ad {
   String description;
   Category? category;
   Address? address;
-  double? price;
+  num? price;
   bool? hidePhone;
-  AdStatus adStatus = AdStatus.pending;
+  AdStatus? adStatus = AdStatus.pending;
   DateTime? createdAt;
   User? user;
   int? views;

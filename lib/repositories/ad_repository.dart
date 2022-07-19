@@ -9,25 +9,28 @@ import 'table_keys.dart';
 
 class AdRepository {
 
-  Future<Ad?> save(Ad ad) async {
-
+  Future<void> save(Ad ad) async {
     try {
       final parseImages = await saveImages(ad.images);
-      final parseUser = ParseUser(null, null, null)..set(keyUserId, ad.user?.id);
-      final adObject = ParseObject(keyAdTable);
-      final parseAcl = ParseACL(owner: parseUser);
 
+      final parseUser = ParseUser(null, null, null)..set(keyUserId, ad.user!.id);
+
+      final adObject = ParseObject(keyAdTable);
+
+      if (ad.id != null) adObject.objectId = ad.id;
+
+      final parseAcl = ParseACL(owner: parseUser);
       parseAcl.setPublicReadAccess(allowed: true);
       parseAcl.setPublicWriteAccess(allowed: false);
       adObject.setACL(parseAcl);
 
       adObject.set<String>(keyAdTitle, ad.title);
       adObject.set<String>(keyAdDescription, ad.description);
-      adObject.set<bool>(keyAdHidePhone, ad.hidePhone!);
-      adObject.set<double>(keyAdPrice, ad.price!);
-      adObject.set<int>(keyAdStatus, ad.adStatus.index);
+      adObject.set<bool>(keyAdHidePhone, ad.hidePhone ?? false);
+      adObject.set<num>(keyAdPrice, ad.price ?? 0);
+      adObject.set<int>(keyAdStatus, ad.adStatus?.index ?? 0);
 
-      adObject.set<String>(keyAdDistrict, ad.address!.district!);
+      adObject.set<String>(keyAdDistrict, ad.address?.district ?? 'Na');
       adObject.set<String>(keyAdCity, ad.address!.city!.name);
       adObject.set<String>(keyAdUf, ad.address!.uf!.initials);
       adObject.set<String>(keyAdZipCode, ad.address!.zipCode!);
@@ -36,17 +39,13 @@ class AdRepository {
 
       adObject.set<ParseUser>(keyAdOwner, parseUser);
 
-      adObject.set<ParseObject>(
-        keyAdCategory, 
-        ParseObject(keyCategoryTable)..set(keyCategoryId, ad.category!.id),
-      );
+      adObject.set<ParseObject>(keyAdCategory,
+          ParseObject(keyCategoryTable)..set(keyCategoryId, ad.category!.id));
 
       final response = await adObject.save();
 
-      if (response.success) {
-        return Ad.fromParse(response.result);
-      } else {
-        return Future.error('${ParseErrors.getDescription(response.error!.code)}');
+      if (!response.success) {
+        return Future.error('${ParseErrors.getDescription(response.error?.code ?? 1)}');
       }
     } catch (e) {
       return Future.error('Falha ao salvar anúncio.');

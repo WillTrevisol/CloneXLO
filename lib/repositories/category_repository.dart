@@ -11,10 +11,10 @@ class CategoryRepository {
 
       final response = await queryBuilder.query();
 
-      if (response.success) {
+      if (response.success && response.result != null) {
         return response.results!.map((e) => Category.fromParse(e)).toList();
       } else {
-        throw Future.error('${ParseErrors.getDescription(response.error!.code)}');
+        return Future.error('${ParseErrors.getDescription(response.error!.code)}');
       }
   }
 }

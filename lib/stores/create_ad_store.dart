@@ -104,14 +104,14 @@ abstract class _CreateAdStoreBase with Store {
   void setPriceText(String value) => priceText = value;
 
   @computed
-  double? get price {
+  num? get price {
     if (priceText.contains(',')) {
-      return double.tryParse(
+      return num.tryParse(
         priceText.replaceAll(
           RegExp('[^0-9]'), '')) !/ 100;
     }
 
-    return double.tryParse(priceText); 
+    return num.tryParse(priceText); 
   }
   bool get validPrice => price != null && price !< 9999999;
   String? get priceError {
@@ -160,13 +160,14 @@ abstract class _CreateAdStoreBase with Store {
   void setError(dynamic value) => error = value;
 
   @observable
-  Ad? savedAd;
+  bool savedAd = false;
 
   @action
-  void setSavedAd(Ad value) => savedAd = value;
+  void setSavedAd(bool value) => savedAd = value;
 
   Future<void> _send() async {
     setError(null);
+    setSavedAd(false);
 
     final ad = Ad(
       images: images, 
@@ -181,8 +182,8 @@ abstract class _CreateAdStoreBase with Store {
 
     setLoading(true);
     try {
-      final savedAd = await AdRepository().save(ad);
-      setSavedAd(savedAd!);
+      await AdRepository().save(ad);
+      setSavedAd(true);
     } catch (e) {
       setError(e);
     }

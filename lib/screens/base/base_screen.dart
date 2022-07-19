@@ -34,8 +34,8 @@ class _BaseScreenState extends State<BaseScreen> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget> [
-          const HomeScreen(),
-          CreateAdScreen(),
+          HomeScreen(),
+          const CreateAdScreen(),
           Container(color: Colors.red),
           Container(color: Colors.black),
           Container(color: Colors.blue),

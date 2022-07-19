@@ -30,7 +30,7 @@ class UserRepository {
     final response = await parseUser.signUp();
 
     if (response.success) {
-      await sharedPreferences.setString(keyLocalUser, response.result);
+      await sharedPreferences.setString(keyLocalUser, jsonEncode(response.result));
       return parseToUser(response.result);
     } else {
       return Future.error('${ParseErrors.getDescription(response.error!.code)}');
