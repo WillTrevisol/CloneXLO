@@ -4,13 +4,22 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../stores/home_store.dart';
+import 'widgets/ad_button.dart';
+import 'widgets/ad_tile.dart';
 import 'widgets/search_dialog.dart';
 import 'widgets/top_bar.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final HomeStore controller = GetIt.I.get<HomeStore>();
+
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +68,81 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           children: <Widget> [
             TopBar(),
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: <Widget> [
+                  Observer(
+                    builder: (_) {
+                      if (controller.error != null) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget> [
+                            const Icon(
+                              Icons.error,
+                              color: Colors.white,
+                              size: 100,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Ocorreu um erro.\n${controller.error}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                  
+                      if (controller.showProgress) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          ),
+                        );
+                      }
+                  
+                      if (controller.adList.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'Nenhum anúncio encontrado.',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+                  
+                      return ListView.builder(
+                        itemCount: controller.itemCount,
+                        controller: scrollController,
+                        itemBuilder: (_, index) {
+                          if (index < controller.adList.length) {
+                            return AdTile(ad: controller.adList[index]);
+                          }
+                          
+                          controller.loadNextPage();
+                          return const SizedBox(
+                            height: 10,
+                            child: LinearProgressIndicator(),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: -50,
+                    child: CreateAdButton(
+                      scrollController: scrollController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
           ],
         ),
       ),

@@ -42,7 +42,7 @@ class CustomDrawerHeader extends StatelessWidget {
                     ),
                     Text(
                       userStore.isLoggedIn
-                          ? userStore.user!.email
+                          ? userStore.user!.email!
                           : 'Clique aqui',
                       style: const TextStyle(
                         color: Colors.white,

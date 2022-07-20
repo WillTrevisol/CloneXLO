@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -78,6 +79,7 @@ class ImageSourceModal extends StatelessWidget {
   }
 
   Future<void> imageSelected(File image) async {
+
     final cropedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -96,7 +98,11 @@ class ImageSourceModal extends StatelessWidget {
     );
 
     if (cropedFile != null) {
-      onImageSelected(cropedFile.path);
+      File compressedFile = await FlutterNativeImage.compressImage(
+        cropedFile.path,
+        quality: 25,
+      );
+      onImageSelected(compressedFile.path);
     }
   }
 }

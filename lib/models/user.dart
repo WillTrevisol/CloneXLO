@@ -4,7 +4,7 @@ class User {
 
   String? id;
   String name;
-  String email;
+  String? email;
   String phone;
   String? password;
   UserType type;

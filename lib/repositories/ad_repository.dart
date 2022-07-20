@@ -16,6 +16,7 @@ class AdRepository {
     required FilterStore filter, 
     String? search, 
     Category? category,
+    required int page,
     }) async {
 
       final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
@@ -24,9 +25,10 @@ class AdRepository {
 
       queryBuilder.whereEqualTo(keyAdStatus, AdStatus.active.index);
 
-      queryBuilder.setLimit(20);
+      queryBuilder.setAmountToSkip(page * 10);
+      queryBuilder.setLimit(10);
 
-      if (search != null && search.trim().isNotEmpty) {
+      if (search!.isNotEmpty && search.trim().isNotEmpty) {
         queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
       }
       
@@ -64,7 +66,7 @@ class AdRepository {
         }
 
         if (filter.sellerType == sellerTypeProfessional) {
-          userQuery.whereEqualTo(keyUserType, UserType.professional);
+          userQuery.whereEqualTo(keyUserType, UserType.professional.index);
         }
 
         queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);

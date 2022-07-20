@@ -58,7 +58,7 @@ class Ad {
           name: 'Default',
         ),
       ), 
-      price: object.get<double>(keyAdPrice), 
+      price: object.get<num>(keyAdPrice), 
       hidePhone: object.get<bool>(keyAdHidePhone), 
       user: UserRepository().parseToUser(object.get<ParseUser>(keyAdOwner)!),
       adStatus: AdStatus.values[object.get<int>(keyAdStatus)!],
