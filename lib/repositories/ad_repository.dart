@@ -143,8 +143,6 @@ class AdRepository {
 
           parseImages.add(parseFile);
 
-          return parseImages;
-
         } else {
 
         final parseFile = ParseFile(null);
