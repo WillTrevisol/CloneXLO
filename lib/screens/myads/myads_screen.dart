@@ -7,7 +7,9 @@ import 'widgets/pending_tile.dart';
 import 'widgets/sold_tile.dart';
 
 class MyAdsScreen extends StatefulWidget {
-  const MyAdsScreen({Key? key}) : super(key: key);
+  const MyAdsScreen({this.initialPage = 0, Key? key}) : super(key: key);
+
+  final int initialPage;
 
   @override
   State<MyAdsScreen> createState() => _MyAdsScreenState();
@@ -22,6 +24,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
   void initState() {
     tabController =  TabController(
     length: 3,
+    initialIndex: widget.initialPage,
     vsync: this,
   );
 
@@ -44,65 +47,77 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: <Widget> [
-          Observer(
-            builder: (_) {
-              if (controller.activeAds.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Nenhum anúncio encontrado.'
-                  ),
-                ); 
-              }
+      body: Observer(
+        builder: (_) {
+          if (controller.loading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          }
 
-              return ListView.builder(
-                itemCount: controller.activeAds.length,
-                itemBuilder: (_, index) {
-                  return ActiveTile(ad: controller.activeAds[index]);
-                }
-              );
-            }
-          ),
-          Observer(
-            builder: (_) {
-              if (controller.pendingAds.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Nenhum anúncio encontrado.'
-                  ),
-                ); 
-              }
+          return TabBarView(
+            controller: tabController,
+            children: <Widget> [
+              Observer(
+                builder: (_) {
+                  if (controller.activeAds.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum anúncio encontrado.'
+                      ),
+                    ); 
+                  }
 
-              return ListView.builder(
-                itemCount: controller.pendingAds.length,
-                itemBuilder: (_, index) {
-                  return PendingTile(ad: controller.pendingAds[index]);
+                  return ListView.builder(
+                    itemCount: controller.activeAds.length,
+                    itemBuilder: (_, index) {
+                      return ActiveTile(ad: controller.activeAds[index], controller: controller);
+                    }
+                  );
                 }
-              );
-            }
-          ),
-          Observer(
-            builder: (_) {
-              if (controller.soldAds.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Nenhum anúncio encontrado.'
-                  ),
-                ); 
-              }
+              ),
+              Observer(
+                builder: (_) {
+                  if (controller.pendingAds.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum anúncio encontrado.'
+                      ),
+                    ); 
+                  }
 
-              return ListView.builder(
-                itemCount: controller.soldAds.length,
-                itemBuilder: (_, index) {
-                  return SoldTile(ad: controller.soldAds[index]);
+                  return ListView.builder(
+                    itemCount: controller.pendingAds.length,
+                    itemBuilder: (_, index) {
+                      return PendingTile(ad: controller.pendingAds[index]);
+                    }
+                  );
                 }
-              );
-            }
-          ),
-        ],
-      ),
+              ),
+              Observer(
+                builder: (_) {
+                  if (controller.soldAds.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum anúncio encontrado.'
+                      ),
+                    ); 
+                  }
+
+                  return ListView.builder(
+                    itemCount: controller.soldAds.length,
+                    itemBuilder: (_, index) {
+                      return SoldTile(ad: controller.soldAds[index]);
+                    }
+                  );
+                }
+              ),
+            ],
+          );
+        }
+      )
     );
   }
 }

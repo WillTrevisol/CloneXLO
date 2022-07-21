@@ -28,14 +28,23 @@ abstract class _MyAdsStoreBase with Store {
   @computed
   List<Ad> get soldAds => adList.where((ad) => ad.adStatus == AdStatus.sold).toList();
 
+  @observable
+  bool loading = false;
+
+  @action
+  void setLoading(bool value) => loading = value;
+
   Future<void> _getMyAds() async {
     final user = GetIt.I.get<UserManagerStore>().user;
-
+    setLoading(true);
     try {
       adList = await AdRepository().getMyAds(user: user!);
     } catch (e) {
       
     }
+    setLoading(false);
   }
+
+  void refresh() => _getMyAds();
 
 }

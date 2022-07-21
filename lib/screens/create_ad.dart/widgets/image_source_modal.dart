@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageSourceModal extends StatelessWidget {
   const ImageSourceModal({required this.onImageSelected, Key? key}) : super(key: key);
 
-  final Function(String) onImageSelected;
+  final Function(File) onImageSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class ImageSourceModal extends StatelessWidget {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
-      final image = File(pickedFile.path);
+      File image = File(pickedFile.path);
       imageSelected(image);
     }
   }
@@ -102,7 +102,7 @@ class ImageSourceModal extends StatelessWidget {
         cropedFile.path,
         quality: 25,
       );
-      onImageSelected(compressedFile.path);
+      onImageSelected(compressedFile);
     }
   }
 }

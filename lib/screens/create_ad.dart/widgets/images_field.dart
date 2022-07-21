@@ -17,8 +17,8 @@ class ImagesField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    void onImageSelected(String path) {
-      controller.images.add(path);
+    void onImageSelected(File image) {
+      controller.images.add(image);
       Navigator.of(context).pop();
     }
 
@@ -81,7 +81,8 @@ class ImagesField extends StatelessWidget {
                           radius: 44,
                           backgroundColor: Colors.grey[300],
                           backgroundImage: controller.images[index] is File 
-                          ? FileImage(File(controller.images[index])) : NetworkImage(controller.images[index]) as ImageProvider
+                          ? FileImage(File(controller.images[index].path)) 
+                          : NetworkImage(controller.images[index]) as ImageProvider,
                         ),
                       ),
                     );

@@ -11,6 +11,7 @@ import '../../stores/page_store.dart';
 import '../../widgets/button/custom_button.dart';
 import '../../widgets/drawer/custom_drawer.dart';
 import '../../widgets/error_box.dart';
+import '../myads/myads_screen.dart';
 import 'widgets/category_field.dart';
 import 'widgets/hide_phone_field.dart';
 import 'widgets/images_field.dart';
@@ -36,7 +37,16 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
 
     when(
       (_) => controller.savedAd, 
-      () => GetIt.I.get<PageStore>().setPage(0),
+      () {
+        if (editing) {
+          Navigator.of(context).pop(true);
+        } else {
+          GetIt.I.get<PageStore>().setPage(0);
+          Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const MyAdsScreen(initialPage: 1))
+        );
+        }
+      },
     );
       
     super.initState();
@@ -170,7 +180,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                   ],
                 );
               },
-            )
+            ),
           ),
         ),
       ),

@@ -3,13 +3,15 @@ import 'package:clone_xlo_flutter/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/ad.dart';
+import '../../../stores/myads_store.dart';
 import '../../ad/ad_screen.dart';
 import '../../create_ad.dart/create_ad_screen.dart';
 
 class ActiveTile extends StatelessWidget {
-  const ActiveTile({required this.ad, Key? key}) : super(key: key);
+  const ActiveTile({required this.controller, required this.ad, Key? key}) : super(key: key);
 
   final Ad ad;
+  final MyAdsStore controller;
 
   static List<MenuChoice> choices = [
     const MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit_rounded),
@@ -114,9 +116,12 @@ class ActiveTile extends StatelessWidget {
 
   Future<void> _editAd(BuildContext context) async {
 
-    Navigator.of(context).push(
+    final result = await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => CreateAdScreen(ad: ad))
     );
+    if (result != null && result) {
+      controller.refresh();
+    }
   }
 }
 

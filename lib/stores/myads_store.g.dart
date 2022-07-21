@@ -47,10 +47,41 @@ mixin _$MyAdsStore on _MyAdsStoreBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: '_MyAdsStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$_MyAdsStoreBaseActionController =
+      ActionController(name: '_MyAdsStoreBase', context: context);
+
+  @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$_MyAdsStoreBaseActionController.startAction(
+        name: '_MyAdsStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_MyAdsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 adList: ${adList},
+loading: ${loading},
 activeAds: ${activeAds},
 pendingAds: ${pendingAds},
 soldAds: ${soldAds}

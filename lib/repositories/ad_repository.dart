@@ -132,9 +132,9 @@ class AdRepository {
 
     try {
       for (final image in images) {
-        if (image is String) {
+        if (image is File) {
 
-          final parseFile = ParseFile(File(image), name: path.basename(image));
+          final parseFile = ParseFile(image, name: path.basename(image.path));
           final response = await parseFile.save();
 
           if (!response.success) {
@@ -145,12 +145,12 @@ class AdRepository {
 
         } else {
 
-        final parseFile = ParseFile(null);
-        parseFile.name = path.basename(image);
-        parseFile.url = image;
+          final parseFile = ParseFile(File(path.basename(image)));
 
-        parseImages.add(parseFile);
+          parseFile.name = path.basename(image);
+          parseFile.url = image;
 
+          parseImages.add(parseFile);
         }
       } 
 

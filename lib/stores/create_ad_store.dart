@@ -15,36 +15,28 @@ class CreateAdStore = _CreateAdStoreBase with _$CreateAdStore;
 
 abstract class _CreateAdStoreBase with Store {
 
-  _CreateAdStoreBase(Ad? ad) {
+  _CreateAdStoreBase(this.ad) {
 
     if (ad != null) {
-      title = ad.title;
-      description = ad.description;
-      images = ad.images.asObservable();
-      category = ad.category;
-      priceText = ad.price?.toStringAsFixed(2);
-      hidePhone = ad.hidePhone;
+      title = ad!.title;
+      description = ad!.description;
+      images = ad!.images.asObservable();
+      category = ad!.category;
+      priceText = ad!.price?.toStringAsFixed(2);
+      hidePhone = ad!.hidePhone;
 
-      if (ad.address != null) {
-        zipCodeController = ZipCodeStore(ad.address!.zipCode!);
+      if (ad!.address != null) {
+        zipCodeController = ZipCodeStore(ad!.address!.zipCode!);
       } else {
         zipCodeController = ZipCodeStore(null);
       }
     } else {
       zipCodeController = ZipCodeStore(null);
-      ad = Ad(
-        images: images, 
-        title: title, 
-        description: description, 
-        category: category, 
-        address: address, 
-        price: price, 
-        hidePhone: hidePhone, 
-        user: GetIt.I.get<UserManagerStore>().user
-      );
     }
     
   }
+
+  final Ad? ad;
 
   @observable
   ObservableList images = ObservableList();
@@ -199,21 +191,21 @@ abstract class _CreateAdStoreBase with Store {
   Future<void> _send() async {
     setError(null);
     setSavedAd(false);
-
-    final ad = Ad(
-      images: images, 
-      title: title, 
-      description: description, 
-      category: category, 
-      address: address, 
-      price: price, 
-      hidePhone: hidePhone, 
-      user: GetIt.I.get<UserManagerStore>().user,
-    );
+  
+    
+    ad?.images = images; 
+    ad?.title = title; 
+    ad?.description = description; 
+    ad?.category = category; 
+    ad?.address = address; 
+    ad?.price = price;
+    ad?.hidePhone = hidePhone;
+    ad?.user = GetIt.I.get<UserManagerStore>().user;
+    
 
     setLoading(true);
     try {
-      await AdRepository().save(ad);
+      await AdRepository().save(ad!);
       setSavedAd(true);
     } catch (e) {
       setError(e);
