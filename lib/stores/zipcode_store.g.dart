@@ -21,13 +21,13 @@ mixin _$ZipCodeStore on _ZipCodeStoreBase, Store {
       Atom(name: '_ZipCodeStoreBase.zipCode', context: context);
 
   @override
-  String get zipCode {
+  String? get zipCode {
     _$zipCodeAtom.reportRead();
     return super.zipCode;
   }
 
   @override
-  set zipCode(String value) {
+  set zipCode(String? value) {
     _$zipCodeAtom.reportWrite(value, super.zipCode, () {
       super.zipCode = value;
     });
@@ -85,7 +85,7 @@ mixin _$ZipCodeStore on _ZipCodeStoreBase, Store {
       ActionController(name: '_ZipCodeStoreBase', context: context);
 
   @override
-  void setZipCode(String value) {
+  void setZipCode(String? value) {
     final _$actionInfo = _$_ZipCodeStoreBaseActionController.startAction(
         name: '_ZipCodeStoreBase.setZipCode');
     try {

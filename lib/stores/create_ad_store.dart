@@ -15,6 +15,37 @@ class CreateAdStore = _CreateAdStoreBase with _$CreateAdStore;
 
 abstract class _CreateAdStoreBase with Store {
 
+  _CreateAdStoreBase(Ad? ad) {
+
+    if (ad != null) {
+      title = ad.title;
+      description = ad.description;
+      images = ad.images.asObservable();
+      category = ad.category;
+      priceText = ad.price?.toStringAsFixed(2);
+      hidePhone = ad.hidePhone;
+
+      if (ad.address != null) {
+        zipCodeController = ZipCodeStore(ad.address!.zipCode!);
+      } else {
+        zipCodeController = ZipCodeStore(null);
+      }
+    } else {
+      zipCodeController = ZipCodeStore(null);
+      ad = Ad(
+        images: images, 
+        title: title, 
+        description: description, 
+        category: category, 
+        address: address, 
+        price: price, 
+        hidePhone: hidePhone, 
+        user: GetIt.I.get<UserManagerStore>().user
+      );
+    }
+    
+  }
+
   @observable
   ObservableList images = ObservableList();
 
@@ -84,7 +115,7 @@ abstract class _CreateAdStoreBase with Store {
     return 'Selecione uma categoria.';
   }
 
-  late ZipCodeStore zipCodeController = ZipCodeStore();
+  late ZipCodeStore zipCodeController;
 
   @computed
   Address? get address => zipCodeController.address;
@@ -98,20 +129,20 @@ abstract class _CreateAdStoreBase with Store {
   }
 
   @observable
-  String priceText = '';
+  String? priceText = '';
 
   @action
   void setPriceText(String value) => priceText = value;
 
   @computed
   num? get price {
-    if (priceText.contains(',')) {
+    if (priceText!.contains(',')) {
       return num.tryParse(
-        priceText.replaceAll(
+        priceText!.replaceAll(
           RegExp('[^0-9]'), '')) !/ 100;
     }
 
-    return num.tryParse(priceText); 
+    return num.tryParse(priceText!); 
   }
   bool get validPrice => price != null && price! < 9999999;
   String? get priceError {
@@ -119,7 +150,7 @@ abstract class _CreateAdStoreBase with Store {
       return null;
     }
 
-    if (priceText.isEmpty) {
+    if (priceText!.isEmpty) {
       return 'Campo obrigatório.';
     }
 

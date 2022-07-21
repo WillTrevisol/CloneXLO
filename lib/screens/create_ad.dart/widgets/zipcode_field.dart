@@ -37,6 +37,7 @@ class ZipCodeField extends StatelessWidget {
                 contentPadding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
                 errorText: createAdController.addressError,
               ),
+              initialValue: controller.zipCode,
               onChanged: controller.setZipCode,
             );
           },

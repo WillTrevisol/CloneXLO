@@ -38,7 +38,7 @@ class _AdScreenState extends State<AdScreen> {
               Stack(
                 children: <Widget> [
                   Container(
-                    color: Colors.grey[700],
+                    color: Colors.grey[100],
                     child: CarouselSlider.builder(
                       carouselController: carouselController,
                       options: CarouselOptions(
@@ -78,7 +78,8 @@ class _AdScreenState extends State<AdScreen> {
                     LocationPanel(ad: widget.ad),
                     Divider(color: Colors.grey[500]),
                     UserPanel(ad: widget.ad),
-                    const SizedBox(height: 120),
+                    SizedBox(
+                      height: widget.ad.adStatus == AdStatus.pending ? 16 : 120),
                   ],
                 ), 
               )
@@ -115,8 +116,11 @@ class _AdScreenState extends State<AdScreen> {
   Widget _buildImage(String url, int index) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: CachedNetworkImage(
-        imageUrl: url,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: CachedNetworkImage(
+          imageUrl: url,
+        ),
       ),
     );
   }

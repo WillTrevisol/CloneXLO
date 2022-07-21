@@ -9,7 +9,7 @@ class ZipCodeStore = _ZipCodeStoreBase with _$ZipCodeStore;
 
 abstract class _ZipCodeStoreBase with Store {
 
-  _ZipCodeStoreBase() {
+  _ZipCodeStoreBase(String? initialZipCode) {
     autorun((_) {
       if (clearZipCode.length != 8) {
         _reset();
@@ -17,16 +17,18 @@ abstract class _ZipCodeStoreBase with Store {
         _searchZipCode();
       }
     });
+
+    setZipCode(initialZipCode);
   }
   
   @observable
-  String zipCode = '';
+  String? zipCode = '';
 
   @action
-  void setZipCode(String value) => zipCode = value;
+  void setZipCode(String? value) => zipCode = value;
 
   @computed
-  String get clearZipCode => zipCode.replaceAll(RegExp('[^0-9]'), '');
+  String get clearZipCode => zipCode!.replaceAll(RegExp('[^0-9]'), '');
 
   @observable
   Address? address;

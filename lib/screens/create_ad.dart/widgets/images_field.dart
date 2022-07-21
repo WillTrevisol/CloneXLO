@@ -77,11 +77,11 @@ class ImagesField extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(8, 16, 0, 16),
                         child: CircleAvatar(
+                          
                           radius: 44,
                           backgroundColor: Colors.grey[300],
-                          backgroundImage: FileImage(
-                            File(controller.images[index]),
-                          ),
+                          backgroundImage: controller.images[index] is File 
+                          ? FileImage(File(controller.images[index])) : NetworkImage(controller.images[index]) as ImageProvider
                         ),
                       ),
                     );

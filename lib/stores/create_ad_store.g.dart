@@ -140,13 +140,13 @@ mixin _$CreateAdStore on _CreateAdStoreBase, Store {
       Atom(name: '_CreateAdStoreBase.priceText', context: context);
 
   @override
-  String get priceText {
+  String? get priceText {
     _$priceTextAtom.reportRead();
     return super.priceText;
   }
 
   @override
-  set priceText(String value) {
+  set priceText(String? value) {
     _$priceTextAtom.reportWrite(value, super.priceText, () {
       super.priceText = value;
     });

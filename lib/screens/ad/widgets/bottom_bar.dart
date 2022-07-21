@@ -10,6 +10,11 @@ class BottomBar extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
+    if (ad.adStatus == AdStatus.pending) {
+      return Container();
+    }
+
     return Positioned(
       bottom: 0,
       child: Column(

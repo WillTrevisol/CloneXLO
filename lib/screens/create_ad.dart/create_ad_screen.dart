@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../models/ad.dart';
 import '../../stores/create_ad_store.dart';
 import '../../stores/page_store.dart';
 import '../../widgets/button/custom_button.dart';
@@ -16,18 +17,23 @@ import 'widgets/images_field.dart';
 import 'widgets/zipcode_field.dart';
 
 class CreateAdScreen extends StatefulWidget {
-  const CreateAdScreen({Key? key}) : super(key: key);
+  const CreateAdScreen({this.ad, Key? key}) : super(key: key);
+
+  final Ad? ad;
 
   @override
   State<CreateAdScreen> createState() => _CreateAdScreenState();
 }
 
 class _CreateAdScreenState extends State<CreateAdScreen> {
-  final CreateAdStore controller = CreateAdStore();
+  late CreateAdStore controller;
+  late bool editing;
 
   @override
   void initState() {
-    
+    controller = CreateAdStore(widget.ad);
+    editing = widget.ad != null;
+
     when(
       (_) => controller.savedAd, 
       () => GetIt.I.get<PageStore>().setPage(0),
@@ -47,9 +53,9 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     const contentPadding = EdgeInsets.fromLTRB(16, 10, 12, 10);
 
     return Scaffold(
-      drawer: const CustomDrawer(),
+      drawer: editing ? null : const CustomDrawer(),
       appBar: AppBar(
-        title: const Text('Criar Anúncio'),
+        title: Text(editing ? 'Editar Anúncio' : 'Criar Anúncio'),
       ),
       body: Center(
         child: Card(
@@ -89,17 +95,20 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ImagesField(controller: controller),
-                    Observer(builder: (_) {
-                      return TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Título *',
-                          labelStyle: labelStyle,
-                          contentPadding: contentPadding,
-                          errorText: controller.titleError,
-                        ),
-                        onChanged: controller.setTitle,
-                      );
-                    }),
+                    Observer(
+                      builder: (_) {
+                        return TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Título *',
+                            labelStyle: labelStyle,
+                            contentPadding: contentPadding,
+                            errorText: controller.titleError,
+                          ),
+                          initialValue: controller.title,
+                          onChanged: controller.setTitle,
+                        );
+                      },
+                    ),
                     Observer(
                       builder: (_) {
                         return TextFormField(
@@ -109,6 +118,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                             contentPadding: contentPadding,
                             errorText: controller.descriptionError,
                           ),
+                          initialValue: controller.description,
                           onChanged: controller.setDescription,
                           maxLines: null,
                         );
@@ -127,6 +137,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                             errorText: controller.priceError,
                           ),
                           keyboardType: TextInputType.number,
+                          initialValue: controller.priceText,
                           onChanged: controller.setPriceText,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
