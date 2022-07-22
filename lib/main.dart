@@ -54,6 +54,14 @@ class CloneXLO extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
         ),
+        cardTheme: CardTheme(
+          clipBehavior: Clip.antiAlias,
+          margin: const EdgeInsets.symmetric(horizontal: 32),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 8,
+        )
       ),
       supportedLocales: const [
         Locale('pt', 'BR'),

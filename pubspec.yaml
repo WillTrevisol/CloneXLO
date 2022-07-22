@@ -32,6 +32,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   readmore: ^2.2.0
   url_launcher: ^6.1.5
+  toggle_switch: ^2.0.1
 
 dev_dependencies:
   flutter_test:

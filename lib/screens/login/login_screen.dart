@@ -2,14 +2,32 @@ import 'package:clone_xlo_flutter/stores/login_store.dart';
 import 'package:clone_xlo_flutter/widgets/error_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 
+import '../../stores/user_manager_store.dart';
 import '../../widgets/button/custom_button.dart';
 import '../signup/signup_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final LoginStore controller = LoginStore();
+  final UserManagerStore userController = GetIt.I.get<UserManagerStore>();
+
+  @override
+  void initState() {
+    when(
+      (_) => userController.user != null, 
+      () => Navigator.of(context).pop(),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +147,7 @@ class LoginScreen extends StatelessWidget {
                               color: Colors.white,
                             ) 
                             : const Text('ENTRAR'),
-                          borderRadius: 20,
+                          borderRadius: 26,
                           backColor: controller.buttonColor,
                           onPressed: controller.signInPressed,
                         ),

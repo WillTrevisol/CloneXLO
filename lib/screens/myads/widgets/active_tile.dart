@@ -28,8 +28,7 @@ class ActiveTile extends StatelessWidget {
         );
       },
       child: Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 4,
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         child: SizedBox(
           height: 80,
           child: Row(

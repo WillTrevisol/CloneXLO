@@ -19,7 +19,7 @@ class PendingTile extends StatelessWidget {
         );
       },
       child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         elevation: 4,
         child: SizedBox(
           height: 80,

@@ -147,7 +147,7 @@ class SignUpScreen extends StatelessWidget {
                               valueColor: AlwaysStoppedAnimation(Colors.white),
                             ) 
                             : const Text('CADASTRAR'),
-                          borderRadius: 20,
+                          borderRadius: 26,
                           backColor: controller.buttonColor,
                           onPressed: controller.signUpPressed,
                         ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../stores/user_manager_store.dart';
 import '../../widgets/drawer/custom_drawer.dart';
+import '../edit_account/edit_account_screen.dart';
 import '../myads/myads_screen.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -25,24 +27,28 @@ class AccountScreen extends StatelessWidget {
           elevation: 8,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget> [
+            children: <Widget>[
               SizedBox(
                 height: 140,
                 child: Stack(
-                  children: <Widget> [
+                  children: <Widget>[
                     Align(
                       alignment: Alignment.center,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            GetIt.I.get<UserManagerStore>().user!.name,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              fontWeight: FontWeight.w900,
-                            ),
+                          Observer(
+                            builder: (_) {
+                              return Text(
+                                GetIt.I.get<UserManagerStore>().user!.name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              );
+                            },
                           ),
                           Text(
                             GetIt.I.get<UserManagerStore>().user!.email!,
@@ -58,7 +64,10 @@ class AccountScreen extends StatelessWidget {
                       alignment: Alignment.topRight,
                       widthFactor: 5,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => EditAccountScreen()));
+                        },
                         child: const Text(
                           'EDITAR',
                           style: TextStyle(
@@ -82,11 +91,10 @@ class AccountScreen extends StatelessWidget {
                 trailing: const Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const MyAdsScreen())
-                  );
+                      MaterialPageRoute(builder: (_) => const MyAdsScreen()));
                 },
               ),
-               ListTile(
+              ListTile(
                 title: const Text(
                   'Favoritos',
                   style: TextStyle(
@@ -95,9 +103,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-                onTap: () {
-
-                },
+                onTap: () {},
               ),
             ],
           ),

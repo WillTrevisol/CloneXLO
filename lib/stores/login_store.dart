@@ -53,6 +53,7 @@ abstract class _LoginStoreBase with Store {
   
   Future<void> _login() async {
     setLoading(true);
+    setError(null);
 
     try {
       final user = await UserRepository().loginEmail(email, password);

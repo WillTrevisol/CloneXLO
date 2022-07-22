@@ -59,7 +59,7 @@ class UserRepository {
     ParseUser? parseUser = ParseUser(null, null, null).fromJson(jsonDecoded);
 
     if (parseUser != null) {
-      final response = await ParseUser.getCurrentUserFromServer(parseUser.sessionToken!);
+      final response = await ParseUser.getCurrentUserFromServer(parseUser.sessionToken ?? '');
 
       if (response!.success) {
         return parseToUser(response.result);
@@ -69,6 +69,58 @@ class UserRepository {
     } 
 
     return null;
+  }
+
+  Future<void> save(User user) async {
+
+    final parseUser = await ParseUser.currentUser();
+
+    if (parseUser != null) {
+      parseUser.set<String>(keyUserName, user.name);
+      parseUser.set<String>(keyUserPhone, user.phone);
+      parseUser.set<int>(keyUserType, user.type.index);
+
+      if (user.password != null) {
+        parseUser.password = user.password;
+      }
+
+      final response = await parseUser.save();
+
+      if (response.success) {
+        final json = jsonEncode(response.result);
+        await sharedPreferences.setString(keyLocalUser, json);
+      } else {
+        return Future.error('${ParseErrors.getDescription(response.error!.code)}');
+      }
+
+      if(user.password != null) {
+        await parseUser.logout();
+
+        final loginResponse = await ParseUser(user.email, user.password, null).login();
+
+        if (!loginResponse.success) {
+          return Future.error('${ParseErrors.getDescription(loginResponse.error!.code)}');
+        }
+      }
+    }
+  }
+
+  Future<void> logout() async {
+
+    // sharedPreferences = await SharedPreferences.getInstance();
+    final ParseUser parseUser = await ParseUser.currentUser();
+
+    
+    final response =  await parseUser.logout();
+
+    if (response.success) {
+      await sharedPreferences.remove(keyLocalUser);
+      return;
+    } else {
+      return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+    }
+      
+    
   }
 
   User parseToUser(ParseUser parseUser) {

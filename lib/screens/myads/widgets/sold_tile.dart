@@ -14,7 +14,7 @@ class SoldTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       elevation: 4,
       child: SizedBox(
         height: 80,

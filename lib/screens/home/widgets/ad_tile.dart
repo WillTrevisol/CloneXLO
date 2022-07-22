@@ -22,11 +22,7 @@ class AdTile extends StatelessWidget {
         height: 135,
         margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
         child: Card(
-          clipBehavior: Clip.antiAlias,
-          elevation: 8,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           child: Row(
             children: <Widget> [
               Expanded(
