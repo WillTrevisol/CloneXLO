@@ -5,6 +5,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../stores/page_store.dart';
 import '../account/account_screen.dart';
+import '../favorites/favorites_screen.dart';
 import '../home/home_screen.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _BaseScreenState extends State<BaseScreen> {
           const HomeScreen(),
           const CreateAdScreen(),
           Container(color: Colors.red),
-          Container(color: Colors.black),
+          FavoritesScreen(),
           const AccountScreen(),
         ],
       ),

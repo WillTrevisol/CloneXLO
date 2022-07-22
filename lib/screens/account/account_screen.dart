@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../stores/user_manager_store.dart';
 import '../../widgets/drawer/custom_drawer.dart';
 import '../edit_account/edit_account_screen.dart';
+import '../favorites/favorites_screen.dart';
 import '../myads/myads_screen.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -103,7 +104,10 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => FavoritesScreen(hideDrawer: true)));
+                },
               ),
             ],
           ),

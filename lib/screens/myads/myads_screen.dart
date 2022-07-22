@@ -5,7 +5,7 @@ import '../../stores/myads_store.dart';
 import '../../widgets/button/custom_button.dart';
 import '../../widgets/error_box.dart';
 import 'widgets/active_tile.dart';
-import 'widgets/empty_card.dart';
+import '../../widgets/empty_card.dart';
 import 'widgets/pending_tile.dart';
 import 'widgets/sold_tile.dart';
 
