@@ -25,8 +25,8 @@ class AdRepository {
 
       queryBuilder.whereEqualTo(keyAdStatus, AdStatus.active.index);
 
-      queryBuilder.setAmountToSkip(page * 10);
-      queryBuilder.setLimit(10);
+      queryBuilder.setAmountToSkip(page * 25);
+      queryBuilder.setLimit(25);
 
       if (search!.isNotEmpty && search.trim().isNotEmpty) {
         queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
@@ -181,4 +181,29 @@ class AdRepository {
     }
   }
 
+  Future<void> soldAd(Ad ad) async {
+    final parseObject = ParseObject(keyAdTable)
+      ..set(keyAdId, ad.id);
+
+    parseObject.set(keyAdStatus, AdStatus.sold.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+    }
+  }
+
+  Future<void> deleteAd(Ad ad) async {
+    final parseObject = ParseObject(keyAdTable)
+      ..set(keyAdId, ad.id);
+
+    parseObject.set(keyAdStatus, AdStatus.deleted.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+    }
+  }
 }

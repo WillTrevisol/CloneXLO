@@ -77,8 +77,10 @@ class ActiveTile extends StatelessWidget {
                       _editAd(context);
                       break;
                     case 1:
+                      _soldAd(context);
                       break;
                     case 2:
+                      _deleteAd(context);
                       break;
                   }
                 },
@@ -122,6 +124,52 @@ class ActiveTile extends StatelessWidget {
     if (result != null && result) {
       controller.refresh();
     }
+  }
+
+  void _soldAd(BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (_) => AlertDialog(
+        title: const Text('Atenção'),
+        content: Text('Confimar a venda de ${ad.title}?'),
+        actions: <Widget> [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), 
+            child: const Text('Cancelar')
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              controller.soldAd(ad);
+            }, 
+            child: const Text('Confirmar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteAd(BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (_) => AlertDialog(
+        title: const Text('Atenção'),
+        content: Text('Tem certeza que deseja deletar, ${ad.title}?'),
+        actions: <Widget> [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), 
+            child: const Text('Cancelar')
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              controller.deleteAd(ad);
+            }, 
+            child: const Text('Confirmar'),
+          ),
+        ],
+      ),
+    );
   }
 }
 

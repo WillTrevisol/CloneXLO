@@ -63,6 +63,22 @@ mixin _$MyAdsStore on _MyAdsStoreBase, Store {
     });
   }
 
+  late final _$errorAtom =
+      Atom(name: '_MyAdsStoreBase.error', context: context);
+
+  @override
+  dynamic get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(dynamic value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
   late final _$_MyAdsStoreBaseActionController =
       ActionController(name: '_MyAdsStoreBase', context: context);
 
@@ -78,10 +94,22 @@ mixin _$MyAdsStore on _MyAdsStoreBase, Store {
   }
 
   @override
+  void setError(dynamic value) {
+    final _$actionInfo = _$_MyAdsStoreBaseActionController.startAction(
+        name: '_MyAdsStoreBase.setError');
+    try {
+      return super.setError(value);
+    } finally {
+      _$_MyAdsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 adList: ${adList},
 loading: ${loading},
+error: ${error},
 activeAds: ${activeAds},
 pendingAds: ${pendingAds},
 soldAds: ${soldAds}

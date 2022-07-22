@@ -50,7 +50,7 @@ class BottomBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(
+                if(!ad.hidePhone!) VerticalDivider(
                   indent: 6, 
                   endIndent: 6, 
                   color: Colors.black.withAlpha(120),

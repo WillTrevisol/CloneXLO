@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../stores/home_store.dart';
+import '../myads/widgets/empty_card.dart';
 import 'widgets/ad_button.dart';
 import 'widgets/ad_tile.dart';
 import 'widgets/search_dialog.dart';
@@ -106,13 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                   
                       if (controller.adList.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'Nenhum anúncio encontrado.',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+                        return const EmptyCard(
+                          message: 'Nenhum anúncio encontrado.',
                         );
                       }
                   

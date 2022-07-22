@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../stores/myads_store.dart';
+import '../../widgets/button/custom_button.dart';
+import '../../widgets/error_box.dart';
 import 'widgets/active_tile.dart';
+import 'widgets/empty_card.dart';
 import 'widgets/pending_tile.dart';
 import 'widgets/sold_tile.dart';
 
@@ -57,17 +60,38 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
             );
           }
 
+          if (controller.error != null) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget> [
+                  ErrorBox(
+                    message: controller.error, 
+                    radius: 16,
+                  ),
+                  CustomButton(
+                    widget: const Text('Tentar novamente'),
+                    backColor: Colors.orange, 
+                    borderRadius: 26, 
+                    onPressed: () {
+                      controller.refresh();
+                    },
+                  )
+                ],
+              ),
+            );
+          }
+
           return TabBarView(
             controller: tabController,
             children: <Widget> [
               Observer(
                 builder: (_) {
                   if (controller.activeAds.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Nenhum anúncio encontrado.'
-                      ),
-                    ); 
+                    return const EmptyCard(
+                      message: 'Nenhum anúncio ativo foi encontrado.',
+                    );
                   }
 
                   return ListView.builder(
@@ -81,11 +105,9 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
               Observer(
                 builder: (_) {
                   if (controller.pendingAds.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Nenhum anúncio encontrado.'
-                      ),
-                    ); 
+                    return const EmptyCard(
+                      message: 'Nenhum anúncio pendente foi encontrado.',
+                    );
                   }
 
                   return ListView.builder(
@@ -99,17 +121,15 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
               Observer(
                 builder: (_) {
                   if (controller.soldAds.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Nenhum anúncio encontrado.'
-                      ),
-                    ); 
+                    return const EmptyCard(
+                      message: 'Nenhum anúncio vendido foi encontrado.',
+                    );
                   }
 
                   return ListView.builder(
                     itemCount: controller.soldAds.length,
                     itemBuilder: (_, index) {
-                      return SoldTile(ad: controller.soldAds[index]);
+                      return SoldTile(ad: controller.soldAds[index], controller: controller);
                     }
                   );
                 }
