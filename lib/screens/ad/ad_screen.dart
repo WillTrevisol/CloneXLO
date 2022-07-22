@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../models/ad.dart';
+import '../../stores/favorite_store.dart';
+import '../../stores/user_manager_store.dart';
 import 'widgets/bottom_bar.dart';
 import 'widgets/description_panel.dart';
 import 'widgets/location_panel.dart';
@@ -23,6 +27,8 @@ class _AdScreenState extends State<AdScreen> {
 
   final CarouselController carouselController = CarouselController();
   int activeIndex = 0;
+  final UserManagerStore userController = GetIt.I.get<UserManagerStore>();
+  final FavoriteStore favoriteController = GetIt.I.get<FavoriteStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,21 @@ class _AdScreenState extends State<AdScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Anúncio'),
+        actions: <Widget> [
+          if (widget.ad.adStatus == AdStatus.active && userController.isLoggedIn) 
+          Observer(
+            builder: (_) {
+              return IconButton(
+                icon: Icon(
+                  favoriteController.favoriteList.any((element) => element.id == widget.ad.id) 
+                  ? Icons.favorite 
+                  : Icons.favorite_outline,
+                ),
+                onPressed: () => favoriteController.toggleFavorite(widget.ad),
+              );
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: <Widget> [

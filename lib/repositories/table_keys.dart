@@ -29,6 +29,12 @@ const keyAdOwner = 'owner';
 const keyAdCreatedAt = 'createdAt';
 const keyAdViews = 'views';
 
+// FAVORITES
+const keyFavoritesTable = 'Favorites';
+const keyFavoriteId = 'objectId';
+const keyFavoriteAd = 'ad';
+const keyFavoriteOwner = 'owner';
+
 // SHARED PREFERENCES KEYS
 const keyLocalUser = 'localUser';
 const keyUfList = 'ufList';
