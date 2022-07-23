@@ -1,7 +1,9 @@
 import 'package:clone_xlo_flutter/repositories/category_repository.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../models/category.dart';
+import 'connectivity_store.dart';
 part 'category_store.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -9,8 +11,14 @@ class CategoryStore = _CategoryStoreBase with _$CategoryStore;
 
 abstract class _CategoryStoreBase with Store {
   
+  final ConnectivityStore connectivity = GetIt.I.get<ConnectivityStore>();
+
   _CategoryStoreBase() {
-    _loadCategories();
+    autorun((_) {
+      if (connectivity.connected && categoriesList.isEmpty) {
+        _loadCategories();
+      }
+    });
   }
 
   @observable

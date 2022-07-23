@@ -5,6 +5,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'screens/base/base_screen.dart';
 import 'stores/category_store.dart';
+import 'stores/connectivity_store.dart';
 import 'stores/favorite_store.dart';
 import 'stores/home_store.dart';
 import 'stores/page_store.dart';
@@ -21,6 +22,7 @@ void main() async {
 }
  
 void setupLocators() {
+  GetIt.I.registerSingleton(ConnectivityStore());
   GetIt.I.registerSingleton(PageStore());
   GetIt.I.registerSingleton(HomeStore());
   GetIt.I.registerSingleton(UserManagerStore());
