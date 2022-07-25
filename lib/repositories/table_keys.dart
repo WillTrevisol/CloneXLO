@@ -38,3 +38,4 @@ const keyFavoriteOwner = 'owner';
 // SHARED PREFERENCES KEYS
 const keyLocalUser = 'localUser';
 const keyUfList = 'ufList';
+const keyUserLocation = 'userLocation';

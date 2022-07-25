@@ -1,6 +1,6 @@
 class City {
 
-  int? id;
+  String? id;
   String name;
 
   City({this.id, required this.name});
@@ -9,6 +9,13 @@ class City {
     id: data['id'],
     name: data['nome'],
   );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id' : id,
+      'nome' : name,
+    };
+  }
 
   @override
   String toString() {

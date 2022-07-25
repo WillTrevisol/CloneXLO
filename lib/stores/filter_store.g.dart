@@ -95,6 +95,36 @@ mixin _$FilterStore on _FilterStoreBase, Store {
     });
   }
 
+  late final _$cityAtom = Atom(name: '_FilterStoreBase.city', context: context);
+
+  @override
+  City? get city {
+    _$cityAtom.reportRead();
+    return super.city;
+  }
+
+  @override
+  set city(City? value) {
+    _$cityAtom.reportWrite(value, super.city, () {
+      super.city = value;
+    });
+  }
+
+  late final _$ufAtom = Atom(name: '_FilterStoreBase.uf', context: context);
+
+  @override
+  UF? get uf {
+    _$ufAtom.reportRead();
+    return super.uf;
+  }
+
+  @override
+  set uf(UF? value) {
+    _$ufAtom.reportWrite(value, super.uf, () {
+      super.uf = value;
+    });
+  }
+
   late final _$_FilterStoreBaseActionController =
       ActionController(name: '_FilterStoreBase', context: context);
 
@@ -143,12 +173,36 @@ mixin _$FilterStore on _FilterStoreBase, Store {
   }
 
   @override
+  void setCity(City? value) {
+    final _$actionInfo = _$_FilterStoreBaseActionController.startAction(
+        name: '_FilterStoreBase.setCity');
+    try {
+      return super.setCity(value);
+    } finally {
+      _$_FilterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setUF(UF? value) {
+    final _$actionInfo = _$_FilterStoreBaseActionController.startAction(
+        name: '_FilterStoreBase.setUF');
+    try {
+      return super.setUF(value);
+    } finally {
+      _$_FilterStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 orderBy: ${orderBy},
 minPrice: ${minPrice},
 maxPrice: ${maxPrice},
 sellerType: ${sellerType},
+city: ${city},
+uf: ${uf},
 priceError: ${priceError},
 isTypeParticular: ${isTypeParticular},
 isFormValid: ${isFormValid}

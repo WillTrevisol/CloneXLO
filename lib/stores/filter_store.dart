@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
+import '../models/city.dart';
+import '../models/uf.dart';
+
 part 'filter_store.g.dart';
 
 enum OrderBy { date, price }
@@ -17,6 +20,8 @@ abstract class _FilterStoreBase with Store {
     required this.maxPrice,
     required this.minPrice,
     required this.sellerType,
+    required this.city,
+    required this.uf,
   });
 
   @observable
@@ -63,6 +68,38 @@ abstract class _FilterStoreBase with Store {
       minPrice: minPrice,
       maxPrice: maxPrice,
       sellerType: sellerType,
+      city: city,
+      uf: uf,
+    );
+  }
+
+  @observable
+  City? city;
+
+  @action
+  void setCity(City? value) => city = value;
+
+  @observable
+  UF? uf;
+
+  @action
+  void setUF(UF? value) => uf = value;
+
+  copyWith({
+    int? minPrice,
+    int? maxPrice,
+    OrderBy? orderBy,
+    int? sellerType,
+    UF? uf,
+    City? city,
+  }) {
+    return FilterStore(
+      minPrice: minPrice ?? this.minPrice,
+      maxPrice: maxPrice ?? this.maxPrice,
+      orderBy: orderBy ?? this.orderBy,
+      sellerType: sellerType ?? this.sellerType,
+      uf: uf ?? this.uf,
+      city: city ?? this.city,
     );
   }
 

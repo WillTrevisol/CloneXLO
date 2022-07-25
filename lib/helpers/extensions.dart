@@ -10,6 +10,18 @@ extension StringExtension on String {
     return regex.hasMatch(this);
   }
 
+  String formatedPostalCode() {
+    String postalCode = trim().replaceAll('.', '').replaceAll('-', '');
+
+    if (length != 8) {
+      postalCode = ('${postalCode}000').substring(0, 8);
+    } else {
+      postalCode = this;
+    }
+
+    return '${postalCode.substring(0, 2)}.${postalCode.substring(2, 5)}-${postalCode.substring(5, 8)}';
+  }
+
 }
 
 extension NumberExtension on num {

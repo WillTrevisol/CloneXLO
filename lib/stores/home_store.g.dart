@@ -160,7 +160,7 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   }
 
   @override
-  void setFilter(FilterStore value) {
+  void setFilter(dynamic value) {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
         name: '_HomeStoreBase.setFilter');
     try {

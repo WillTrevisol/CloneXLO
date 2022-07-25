@@ -33,6 +33,22 @@ mixin _$UserManagerStore on _UserManagerStore, Store {
     });
   }
 
+  late final _$readyToFetchAdsAtom =
+      Atom(name: '_UserManagerStore.readyToFetchAds', context: context);
+
+  @override
+  bool get readyToFetchAds {
+    _$readyToFetchAdsAtom.reportRead();
+    return super.readyToFetchAds;
+  }
+
+  @override
+  set readyToFetchAds(bool value) {
+    _$readyToFetchAdsAtom.reportWrite(value, super.readyToFetchAds, () {
+      super.readyToFetchAds = value;
+    });
+  }
+
   late final _$_UserManagerStoreActionController =
       ActionController(name: '_UserManagerStore', context: context);
 
@@ -48,9 +64,21 @@ mixin _$UserManagerStore on _UserManagerStore, Store {
   }
 
   @override
+  void setReadyToFetchAds(bool value) {
+    final _$actionInfo = _$_UserManagerStoreActionController.startAction(
+        name: '_UserManagerStore.setReadyToFetchAds');
+    try {
+      return super.setReadyToFetchAds(value);
+    } finally {
+      _$_UserManagerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 user: ${user},
+readyToFetchAds: ${readyToFetchAds},
 isLoggedIn: ${isLoggedIn}
     ''';
   }

@@ -8,7 +8,7 @@ class Address {
   String? zipCode;
   String? district;
 
-  Address({required this.uf, required this.city, required this.zipCode, required this.district});
+  Address({required this.uf, required this.city, this.zipCode, this.district});
 
   @override
   String toString() {

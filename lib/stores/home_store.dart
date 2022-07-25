@@ -2,10 +2,13 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../models/ad.dart';
+import '../models/address.dart';
 import '../models/category.dart';
 import '../repositories/ad_repository.dart';
 import 'connectivity_store.dart';
 import 'filter_store.dart';
+import 'location_store.dart';
+import 'user_manager_store.dart';
 part 'home_store.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -14,12 +17,29 @@ class HomeStore = _HomeStoreBase with _$HomeStore;
 abstract class _HomeStoreBase with Store {
 
   final ConnectivityStore connectivity = GetIt.I.get<ConnectivityStore>();
+  final LocationStore locationController = GetIt.I.get<LocationStore>();
+  final UserManagerStore userController = GetIt.I.get<UserManagerStore>();
 
   _HomeStoreBase() {
     autorun((_) async {
       connectivity.connected;
+
+      reaction(
+        (_) => locationController.address,
+        (Address? address) {
+          if (address != null) {
+            setFilter(filter.copyWith(city: address.city, uf: address.uf));
+          }
+        }
+      );
+
       try {
         setLoading(true);
+
+        if (!locationController.readyToFetchAds) return;
+
+        if (!userController.readyToFetchAds) return;
+
         final newAds = await AdRepository().getHomeAdList(
           filter: filter,
           search: search,
@@ -62,12 +82,14 @@ abstract class _HomeStoreBase with Store {
     minPrice: null,
     maxPrice: null,
     sellerType: sellerTypeParticular,
+    city: null,
+    uf: null,
   );
 
   FilterStore get clonedFilter => filter.clone();
 
   @action
-  void setFilter(FilterStore value) {
+  void setFilter(dynamic value) {
     filter = value;
     resetPage();
   }

@@ -72,6 +72,18 @@ class AdRepository {
         queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);
       }
 
+      if (filter.uf != null) {
+        if (filter.uf!.id != -1) {
+          queryBuilder.whereEqualTo(keyAdUf, filter.uf?.initials);
+        }
+      }
+
+      if (filter.city != null && filter.city?.id != null) {
+        if (!filter.city!.id!.contains('*')) {
+          queryBuilder.whereEqualTo(keyAdCity, filter.city?.name);
+        }
+      }
+
       final response = await queryBuilder.query();
 
       if (response.success && response.results != null) {

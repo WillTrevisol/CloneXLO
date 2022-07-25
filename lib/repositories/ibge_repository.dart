@@ -47,7 +47,7 @@ class IbgeRepository {
         ?..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
       return cityList;
-    } on DioError {
+    } catch(e) {
       return Future.error('Falha ao obter lista de cidades.');
     }
   }

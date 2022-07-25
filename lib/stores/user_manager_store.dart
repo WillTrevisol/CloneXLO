@@ -19,13 +19,21 @@ abstract class _UserManagerStore with Store {
   @action
   void setUser(User? value) => user = value;
 
+  @observable
+  bool readyToFetchAds = false;
+
+  @action
+  void setReadyToFetchAds(bool value) => readyToFetchAds = value;
+
   @computed
   bool get isLoggedIn => user != null;
 
   Future<void> _getCurrentUser() async {
+    setReadyToFetchAds(false);
     final user = await UserRepository().currentUser();
 
     setUser(user);
+    setReadyToFetchAds(true);
   }
 
   Future<void> logout() async {

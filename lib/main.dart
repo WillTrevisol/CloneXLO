@@ -8,6 +8,7 @@ import 'stores/category_store.dart';
 import 'stores/connectivity_store.dart';
 import 'stores/favorite_store.dart';
 import 'stores/home_store.dart';
+import 'stores/location_store.dart';
 import 'stores/page_store.dart';
 import 'stores/user_manager_store.dart';
 
@@ -24,8 +25,9 @@ void main() async {
 void setupLocators() {
   GetIt.I.registerSingleton(ConnectivityStore());
   GetIt.I.registerSingleton(PageStore());
-  GetIt.I.registerSingleton(HomeStore());
+  GetIt.I.registerSingleton(LocationStore());
   GetIt.I.registerSingleton(UserManagerStore());
+  GetIt.I.registerSingleton(HomeStore());
   GetIt.I.registerSingleton(CategoryStore());
   GetIt.I.registerSingleton(FavoriteStore());
 }

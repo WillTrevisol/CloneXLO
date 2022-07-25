@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../stores/filter_store.dart';
 import '../../stores/home_store.dart';
 import '../../widgets/button/custom_button.dart';
+import 'widgets/location_field.dart';
 import 'widgets/orderby_field.dart';
 import 'widgets/price_range_field.dart';
 import 'widgets/seller_type_field.dart';
@@ -33,6 +34,7 @@ class FilterScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget> [
+              LocationField(controller: controller),
               OrderByField(controller: controller),
               PriceRangeField(controller: controller),
               SellerTypeField(controller: controller),
