@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../stores/user_manager_store.dart';
 import '../../widgets/button/custom_button.dart';
+import '../recovery/recovery_screen.dart';
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -118,7 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => RecoveryScreen(email: controller.email))
+                            );
+                          },
                         ),
                       ],
                     ),

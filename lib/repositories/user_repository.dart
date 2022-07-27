@@ -106,10 +106,7 @@ class UserRepository {
   }
 
   Future<void> logout() async {
-
-    // sharedPreferences = await SharedPreferences.getInstance();
     final ParseUser parseUser = await ParseUser.currentUser();
-
     
     final response =  await parseUser.logout();
 
@@ -120,7 +117,15 @@ class UserRepository {
       return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
     }
       
-    
+  }
+
+  Future<void> recoverPassword(String email) async {
+    final ParseUser parseUser = ParseUser(email.toLowerCase(), null, email);
+    final response = await parseUser.requestPasswordReset();
+    if (!response.success) {
+      Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}'); 
+    }
+
   }
 
   User parseToUser(ParseUser parseUser) {
