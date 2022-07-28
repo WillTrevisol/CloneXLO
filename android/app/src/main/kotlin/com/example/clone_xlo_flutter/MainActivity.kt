@@ -1,4 +1,4 @@
-package com.example.clone_xlo_flutter
+package com.trevisol.xlo_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 
