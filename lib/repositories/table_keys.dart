@@ -35,6 +35,14 @@ const keyFavoriteId = 'objectId';
 const keyFavoriteAd = 'ad';
 const keyFavoriteOwner = 'owner';
 
+// CHATROOM
+const keyChatHomeTable = 'ChatHome';
+const keyChatHomeId = 'objectId';
+const keyChatHomeAd = 'ad';
+const keyChatHomeUsers = 'users';
+const keyChatHomeLastMessage = 'lastMessage';
+const keyChatHomeLastDateMessage = 'updatedAt';
+
 // SHARED PREFERENCES KEYS
 const keyLocalUser = 'localUser';
 const keyUfList = 'ufList';

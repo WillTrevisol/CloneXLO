@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../helpers/log.dart';
 import '../models/address.dart';
 import '../models/city.dart';
 import '../models/uf.dart';
@@ -51,7 +52,7 @@ abstract class _LocationStoreBase with Store {
                       return;
                     }
                   }
-                  print('setLocation(LocationStatus.initDone)');
+                  log.i('setLocation(LocationStatus.initDone)');
                   setStatus(LocationStatus.initDone);
                 }
               );
@@ -141,15 +142,15 @@ abstract class _LocationStoreBase with Store {
           zipCode: place.postalCode!.formatedPostalCode(),
         );
         setAddress(address);
-        print('Location DONE');
+        log.i('Location DONE');
         setStatus(LocationStatus.done);
       } else {
-        print('Location FAILED');
+        log.i('Location FAILED');
         setStatus(LocationStatus.failed);
       }
     } catch (e) {
-      print('Location FAILED');
-      print('getLocation failed => ${e.toString()}');
+      log.i('Location FAILED');
+      log.i('getLocation failed => ${e.toString()}');
       setStatus(LocationStatus.failed);
     }
   }

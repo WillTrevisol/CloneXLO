@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../helpers/log.dart';
 import '../../models/address.dart';
 import '../../stores/location_store.dart';
 import '../../widgets/button/custom_button.dart';
@@ -59,7 +60,7 @@ class _LocationScreenState extends State<LocationScreen> with SingleTickerProvid
     reaction(
       (_) => locationController.exitLocationScreen, 
       (dynamic) {
-        print(dynamic);
+        log.i(dynamic);
         Navigator.of(context).pop();
       }
     );

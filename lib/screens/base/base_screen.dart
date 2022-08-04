@@ -9,6 +9,7 @@ import '../../stores/location_store.dart';
 import '../../stores/page_store.dart';
 import '../account/account_screen.dart';
 import '../ad/ad_screen.dart';
+import '../chat_home.dart/chat_home_screen.dart';
 import '../create_ad.dart/create_ad_screen.dart';
 import '../favorites/favorites_screen.dart';
 import '../home/home_screen.dart';
@@ -97,7 +98,7 @@ class _BaseScreenState extends State<BaseScreen> {
         children: <Widget> [
           const HomeScreen(),
           const CreateAdScreen(),
-          Container(color: Colors.red),
+          const ChatHomeScreen(),
           FavoritesScreen(),
           const AccountScreen(),
         ],

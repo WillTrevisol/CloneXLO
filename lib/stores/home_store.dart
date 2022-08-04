@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
+import '../helpers/log.dart';
 import '../models/ad.dart';
 import '../models/address.dart';
 import '../models/category.dart';
@@ -144,7 +145,7 @@ abstract class _HomeStoreBase with Store {
     try {
       await AdRepository().incrementViews(ad);
     } catch (e) {
-      print(e);
+      log.i(e);
     }
   }
 
