@@ -218,4 +218,28 @@ class AdRepository {
       return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
     }
   }
+
+  Future<Ad?> getAdById(String id) async {
+
+    try {
+      final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
+        ..includeObject([keyAdOwner, keyAdCategory])
+        ..whereEqualTo(keyAdId, id);
+
+      final response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        return Ad.fromParse(response.results?.first);
+      }
+
+      if (response.success && response.results == null) {
+        return Future.error('Anúncio não encontrado');
+      }
+
+      return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+    } catch (e) {
+      return Future.error('Falha de conexão');
+    }
+
+  }
 }

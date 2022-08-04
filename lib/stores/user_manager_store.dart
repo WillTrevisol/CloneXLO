@@ -1,5 +1,6 @@
 import 'package:clone_xlo_flutter/repositories/user_repository.dart';
 import 'package:mobx/mobx.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../models/user.dart';
 part 'user_manager_store.g.dart';
@@ -17,7 +18,10 @@ abstract class _UserManagerStore with Store {
   User? user;
 
   @action
-  void setUser(User? value) => user = value;
+  void setUser(User? value) {
+    user = value;
+    updateUserOneSignal(value);
+  }
 
   @observable
   bool readyToFetchAds = false;
@@ -39,6 +43,14 @@ abstract class _UserManagerStore with Store {
   Future<void> logout() async {
     await UserRepository().logout();
     setUser(null);
+  }
+
+  void updateUserOneSignal(User? user) {
+    if (user != null) {
+      OneSignal.shared.setExternalUserId(user.id!);
+    }
+
+    OneSignal.shared.removeExternalUserId();
   }
 
 }

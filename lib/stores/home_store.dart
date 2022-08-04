@@ -136,4 +136,8 @@ abstract class _HomeStoreBase with Store {
     lastPage = false;
   }
 
+  Future<Ad?> getAdById(String id) async {
+    return await AdRepository().getAdById(id);
+  }
+
 }
