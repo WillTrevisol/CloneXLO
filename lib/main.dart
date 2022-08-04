@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'screens/base/base_screen.dart';
@@ -18,6 +19,7 @@ import 'stores/user_manager_store.dart';
 
 const appId = String.fromEnvironment('APPID');
 const clientKey = String.fromEnvironment('CLIENTKEY');
+const oneSignalKey = String.fromEnvironment('ONESIGNALKEY');
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -27,6 +29,7 @@ void main() async {
       await Firebase.initializeApp();
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       setupLocators();
+      await oneSignalConfig();
       runApp(const CloneXLO());
     }, (
       (error, stack) => {
@@ -34,6 +37,12 @@ void main() async {
       }
     ),
   );
+}
+
+Future<void> oneSignalConfig() async {
+  OneSignal.shared.setLogLevel(OSLogLevel.none, OSLogLevel.none);
+  OneSignal.shared.setLocationShared(false);
+  OneSignal.shared.setAppId(oneSignalKey);
 }
  
 void setupLocators() {

@@ -27,6 +27,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 def flutterMinSdkVersion = localProperties.getProperty('flutter.minSdkVersion')
 if (flutterMinSdkVersion == null) {
