@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clone_xlo_flutter/helpers/extensions.dart';
+import 'package:get_it/get_it.dart';
 import '../../../models/ad.dart';
+import '../../../stores/home_store.dart';
 import '../../ad/ad_screen.dart';
 
 class AdTile extends StatelessWidget {
@@ -14,6 +16,7 @@ class AdTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        GetIt.I.get<HomeStore>().incrementViews(ad);
         Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => AdScreen(ad: ad))
         );

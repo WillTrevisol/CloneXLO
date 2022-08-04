@@ -242,4 +242,18 @@ class AdRepository {
     }
 
   }
+
+  Future<void> incrementViews(Ad ad) async {
+    final ParseCloudFunction function = ParseCloudFunction('adIncrementViews');
+    final Map<String, String> params = <String, String>{'id' : ad.id ??= ''};
+
+    try {
+      final ParseResponse response = await function.execute(parameters: params);
+      if (!response.success) {
+        return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
+      }
+    } catch (e) {
+      return Future.error('Falha ao incrementar views');
+    }
+  }
 }

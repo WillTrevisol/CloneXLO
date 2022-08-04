@@ -140,4 +140,12 @@ abstract class _HomeStoreBase with Store {
     return await AdRepository().getAdById(id);
   }
 
+  Future<void> incrementViews(Ad ad) async {
+    try {
+      await AdRepository().incrementViews(ad);
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }
