@@ -57,7 +57,7 @@ class CustomDrawerHeader extends StatelessWidget {
       ),
       onTap: () {
         if (userStore.isLoggedIn) {
-          GetIt.I<PageStore>().setPage(4);
+          GetIt.I.get<PageStore>().setPage(4);
         }
 
         if (!userStore.isLoggedIn) {

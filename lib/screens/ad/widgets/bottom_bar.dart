@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/ad.dart';
+import '../../../stores/chat_home_store.dart';
+import '../../messages/messages_screen.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({required this.ad, Key? key}) : super(key: key);
@@ -58,7 +61,12 @@ class BottomBar extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {  },
+                    onPressed: () {
+                      GetIt.I.get<ChatHomeStore>().setAd(ad);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const MessageScreen())
+                      );
+                    },
                     child: const Text(
                       'Chat',
                       style: TextStyle(

@@ -35,13 +35,21 @@ const keyFavoriteId = 'objectId';
 const keyFavoriteAd = 'ad';
 const keyFavoriteOwner = 'owner';
 
-// CHATROOM
+// CHATHOME
 const keyChatHomeTable = 'ChatHome';
 const keyChatHomeId = 'objectId';
 const keyChatHomeAd = 'ad';
 const keyChatHomeUsers = 'users';
 const keyChatHomeLastMessage = 'lastMessage';
 const keyChatHomeLastDateMessage = 'updatedAt';
+
+// MESSAGES
+const keyMessageTable = 'Messages';
+const keyMessageId = 'objectId';
+const keyMessageChatHome = 'chatHome';
+const keyMessageText = 'messageText';
+const keyMessageDestinationId = 'destinationId';
+const keyMessageDateSend = 'createdAt';
 
 // SHARED PREFERENCES KEYS
 const keyLocalUser = 'localUser';

@@ -10,6 +10,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'screens/base/base_screen.dart';
 import 'stores/category_store.dart';
+import 'stores/chat_home_store.dart';
 import 'stores/connectivity_store.dart';
 import 'stores/favorite_store.dart';
 import 'stores/home_store.dart';
@@ -20,6 +21,7 @@ import 'stores/user_manager_store.dart';
 const appId = String.fromEnvironment('APPID');
 const clientKey = String.fromEnvironment('CLIENTKEY');
 const oneSignalKey = String.fromEnvironment('ONESIGNALKEY');
+const liveQueryUrl = String.fromEnvironment('LIVEQUERYURL');
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -51,6 +53,7 @@ void setupLocators() {
   GetIt.I.registerSingleton(LocationStore());
   GetIt.I.registerSingleton(UserManagerStore());
   GetIt.I.registerSingleton(HomeStore());
+  GetIt.I.registerSingleton(ChatHomeStore());
   GetIt.I.registerSingleton(CategoryStore());
   GetIt.I.registerSingleton(FavoriteStore());
 }
@@ -60,6 +63,7 @@ Future<void> initializeParse() async {
     appId,
     'https://parseapi.back4app.com',
     clientKey: clientKey,
+    liveQueryUrl: liveQueryUrl,
     autoSendSessionId: true,
     debug: true,
   );

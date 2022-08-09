@@ -10,6 +10,15 @@ import 'user.dart';
 
 enum AdStatus { pending, active, sold, deleted }
 
+extension AdStatusMembers on AdStatus {
+  String? get statusDescription => {
+    AdStatus.pending : 'Anúncio Pendente',
+    AdStatus.active : 'Anúncio Ativo',
+    AdStatus.sold : 'Anúncio Vendido',
+    AdStatus.deleted : 'Anúncio Removido'
+  }[this];
+}
+
 class Ad {
 
   String? id;

@@ -14,6 +14,19 @@ class ChatHomeStore = _ChatHomeStoreBase with _$ChatHomeStore;
 
 abstract class _ChatHomeStoreBase with Store {
 
+  _ChatHomeStoreBase() {
+    reaction(
+      (_) => userController.isLoggedIn, 
+      (bool loggedIn) {
+        if (loggedIn) {
+          _getChatRoomList();
+          _liveChatRoomList();
+        } else {
+          _cancelLive();
+        }
+      }
+    );
+  }
 
   final UserManagerStore userController = GetIt.I.get<UserManagerStore>();
   final ChatHomeRepository chatRepository = ChatHomeRepository();
@@ -22,13 +35,13 @@ abstract class _ChatHomeStoreBase with Store {
   ChatHome? _chatHome;
 
   @action
-  void setChatHome(ChatHome value) => _chatHome = value;
+  void setChatHome(ChatHome? value) => _chatHome = value;
 
   @observable
   Ad? _ad;
 
   @action
-  void setAd(Ad value) => _ad = value;
+  void setAd(Ad? value) => _ad = value;
 
   @observable
   ObservableList<ChatHome> chatHomeList = ObservableList<ChatHome>();
@@ -94,7 +107,6 @@ abstract class _ChatHomeStoreBase with Store {
     }
   }
 
-  @action
   _liveChatRoomList() async {
     await chatRepository.liveChatHomeList(
       user: userController.user!, 
@@ -117,6 +129,10 @@ abstract class _ChatHomeStoreBase with Store {
 
       final ChatHome? chat = await chatRepository
         .createChatHome(ad: ad, users: users);
+      if (chat != null) {
+        setChatHome(chat);
+      }
+      return chat;
     } catch (e) {
       log.i(e);
       return null;

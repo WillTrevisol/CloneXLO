@@ -150,7 +150,7 @@ abstract class _SignUpStoreBase with Store {
 
     try {
       final resultUser = await UserRepository().signUp(user);
-      GetIt.I<UserManagerStore>().setUser(resultUser);
+      GetIt.I.get<UserManagerStore>().setUser(resultUser);
     } catch (e) {
       setError(e);
     }

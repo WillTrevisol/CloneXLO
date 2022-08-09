@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
+import '../../models/chat_home.dart';
+import '../../stores/chat_home_store.dart';
 import '../../stores/connectivity_store.dart';
 import '../../stores/home_store.dart';
 import '../../stores/location_store.dart';
@@ -14,6 +16,7 @@ import '../create_ad.dart/create_ad_screen.dart';
 import '../favorites/favorites_screen.dart';
 import '../home/home_screen.dart';
 import '../location/location_screen.dart';
+import '../messages/messages_screen.dart';
 import '../offline/offline_screen.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -83,6 +86,36 @@ class _BaseScreenState extends State<BaseScreen> {
               );
             }
           }
+
+          if (openedResult.notification.additionalData!.containsKey('chatHomeId')) {
+            ChatHome? chat = GetIt.I.get<ChatHomeStore>().chatHomeList.firstWhere(
+              (chat) => chat.id == openedResult.notification.additionalData!['chatHomeId']
+            );
+
+            if (mounted) {
+              GetIt.I.get<ChatHomeStore>().setChatHome(chat);
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const MessageScreen())
+              );
+            }
+          }
+        }
+      }
+    );
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+      (OSNotificationReceivedEvent event) {
+        if (event.notification.additionalData != null) {
+          if (event.notification.additionalData!.containsKey('chatHomeId')) {
+            if (GetIt.I.get<ChatHomeStore>().chatHome != null 
+              && event.notification.additionalData!['chatHomeId'] == GetIt.I.get<ChatHomeStore>().chatHome?.id) {
+                event.complete(null);
+            } else {
+              event.complete(event.notification);
+            }
+          } else {
+            event.complete(event.notification);
+          }
         }
       }
     );
@@ -98,7 +131,7 @@ class _BaseScreenState extends State<BaseScreen> {
         children: <Widget> [
           const HomeScreen(),
           const CreateAdScreen(),
-          const ChatHomeScreen(),
+          ChatHomeScreen(),
           FavoritesScreen(),
           const AccountScreen(),
         ],

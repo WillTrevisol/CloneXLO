@@ -114,14 +114,6 @@ mixin _$ChatHomeStore on _ChatHomeStoreBase, Store {
     return _$_getChatRoomListAsyncAction.run(() => super._getChatRoomList());
   }
 
-  late final _$_liveChatRoomListAsyncAction =
-      AsyncAction('_ChatHomeStoreBase._liveChatRoomList', context: context);
-
-  @override
-  Future _liveChatRoomList() {
-    return _$_liveChatRoomListAsyncAction.run(() => super._liveChatRoomList());
-  }
-
   late final _$createChatAsyncAction =
       AsyncAction('_ChatHomeStoreBase.createChat', context: context);
 
@@ -134,7 +126,7 @@ mixin _$ChatHomeStore on _ChatHomeStoreBase, Store {
       ActionController(name: '_ChatHomeStoreBase', context: context);
 
   @override
-  void setChatHome(ChatHome value) {
+  void setChatHome(ChatHome? value) {
     final _$actionInfo = _$_ChatHomeStoreBaseActionController.startAction(
         name: '_ChatHomeStoreBase.setChatHome');
     try {
@@ -145,7 +137,7 @@ mixin _$ChatHomeStore on _ChatHomeStoreBase, Store {
   }
 
   @override
-  void setAd(Ad value) {
+  void setAd(Ad? value) {
     final _$actionInfo = _$_ChatHomeStoreBaseActionController.startAction(
         name: '_ChatHomeStoreBase.setAd');
     try {

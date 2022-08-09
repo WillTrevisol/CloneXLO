@@ -8,7 +8,7 @@ import 'table_keys.dart';
 
 class ChatHomeRepository {
 
-  final LiveQuery _liveQuery = LiveQuery(autoSendSessionId: true);
+  final LiveQuery _liveQuery = LiveQuery();
   late Subscription? _subscription;
 
   QueryBuilder getQuery(User user) => 
@@ -59,6 +59,8 @@ class ChatHomeRepository {
   }
 
   Future<ChatHome?> createChatHome({required Ad ad, required List<User> users}) async {
+    ParseResponse? response;
+
     try {
       final chatHomeObject = ParseObject(keyChatHomeTable);
 
@@ -73,13 +75,14 @@ class ChatHomeRepository {
           ..setReadAccess(userId: user.objectId!);
       }
 
-      chatHomeObject..setACL(parseAcl)
-        ..set(keyChatHomeUsers, usersList)
-        ..set(keyChatHomeAd, 
+      chatHomeObject
+        ..setACL<ParseACL>(parseAcl)
+        ..set<List<ParseUser>>(keyChatHomeUsers, usersList)
+        ..set<ParseObject>(keyChatHomeAd, 
           ParseObject(keyAdTable)
             ..set(keyAdId, ad.id));
       
-      final response = await chatHomeObject.save();
+      response = await chatHomeObject.save();
 
       if (!response.success) {
         return Future.error('${ParseErrors.getDescription(response.error?.code ?? -1)}');
@@ -87,7 +90,7 @@ class ChatHomeRepository {
 
       return await getChatHomeById((response.results?.first as ParseObject).objectId!);
     } catch (e) {
-      return Future.error('Falha ao criar chat');
+      return Future.error('${ParseErrors.getDescription(response?.error?.code ?? -1)}');
     }
   }
 
